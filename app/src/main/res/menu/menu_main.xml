@@ -1,10 +1,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.mat.financialmanager.MainActivity">
+    tools:context=".activity.MainActivity">
+    <item
+        android:id="@+id/action_my_invoices"
+        android:orderInCategory="100"
+        android:title="@string/action_my_invoices"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_add_invoice"
+        android:orderInCategory="100"
+        android:title="@string/action_add_invoice"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="100"
+        android:title="@string/action_logout"
         app:showAsAction="never" />
 </menu>
