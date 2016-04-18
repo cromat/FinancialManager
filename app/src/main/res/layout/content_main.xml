@@ -12,9 +12,25 @@
     tools:context=".activity.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <android.support.v7.widget.RecyclerView
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="30dp"
+        android:text="gumb"
+        android:id="@+id/gumb"
+         />
 
-    </android.support.v7.widget.RecyclerView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:id="@+id/test"
+        android:layout_below="@id/gumb"
+        />
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id=""-->
+        <!--&gt;-->
+
+    <!--</android.support.v7.widget.RecyclerView>-->
 </RelativeLayout>

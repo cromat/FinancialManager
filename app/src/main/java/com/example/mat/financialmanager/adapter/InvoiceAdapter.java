@@ -5,10 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.model.Invoice;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,16 +38,22 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
 
     }
 
-
     public static class InvoiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private Context context;
+        public TextView name;
+        public TextView invoiceNumber;
+        public TextView cardExpiry;
+        public TextView balance;
+        public ImageView cardType;
+        public Context context;
 
         public InvoiceViewHolder(View view) {
             super(view);
-
             view.setOnClickListener(this);
-
+            name = (TextView)view.findViewById(R.id.item_text_invoice_name);
+            invoiceNumber = (TextView)view.findViewById(R.id.item_text_invoice_number);
+            cardExpiry = (TextView) view.findViewById(R.id.item_card_expiry);
+            balance = (TextView)view.findViewById(R.id.item_text_balance);
             context = itemView.getContext();
         }
 

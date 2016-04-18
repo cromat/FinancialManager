@@ -4,4 +4,11 @@
     <string name="action_my_invoices">My Invoices</string>
     <string name="action_add_invoice">Add Invoice</string>
     <string name="action_logout">Logout</string>
+    <string name="title_activity_add_invoice">AddInvoiceActivity</string>
+    <string name="edit_invoice_name">Invoice Name</string>
+    <string name="edit_invoice_number">Invoice Number</string>
+    <string name="expiry_year">Year</string>
+    <string name="edit_balance">Balance</string>
+    <string name="button_save">Save</string>
+    <string name="edit_card_number">Card Number</string>
 </resources>

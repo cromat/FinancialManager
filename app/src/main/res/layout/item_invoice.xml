@@ -19,7 +19,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_photo"
+                android:id="@+id/item_image_invoice_type"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="16dp"
@@ -28,8 +28,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_name"
-                android:layout_toRightOf="@+id/person_photo"
+                android:id="@+id/item_text_invoice_name"
+                android:layout_toRightOf="@+id/item_image_invoice_type"
                 android:layout_alignParentTop="true"
                 android:textSize="30sp"
                 />
@@ -37,9 +37,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/person_age"
-                android:layout_toRightOf="@+id/person_photo"
-                android:layout_below="@+id/person_name"
+                android:id="@+id/item_text_invoice_number"
+                android:layout_toRightOf="@+id/item_image_invoice_type"
+                android:layout_below="@+id/item_text_invoice_name"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_card_expiry"
+                android:layout_toRightOf="@+id/item_image_invoice_type"
+                android:layout_below="@+id/item_text_invoice_number"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_text_balance"
+                android:layout_toRightOf="@+id/item_card_expiry"
+                android:layout_below="@+id/item_text_invoice_number"
                 />
 
         </RelativeLayout>
