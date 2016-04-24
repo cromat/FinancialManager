@@ -24,6 +24,10 @@
         <activity
             android:name=".activity.AddInvoiceActivity"
             android:label="@string/title_activity_add_invoice"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.InvoiceDetailsActivity"
+            android:label="@string/title_activity_invoice_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

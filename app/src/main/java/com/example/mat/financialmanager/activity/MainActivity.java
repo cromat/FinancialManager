@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                .applicationId("gudicek")
-                .server("http://parse-gudicek.rhcloud.com/parse/")
+                .applicationId("finmgr")
+                .server("http://finmgr-cromat.rhcloud.com/parse/")
                 .build()
         );
 
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                         } else {
-                            // handle Parse Exception here
+                            e.printStackTrace();
                         }
                     }
                 });

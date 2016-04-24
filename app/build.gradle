@@ -28,4 +28,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.0.+'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
+    compile files('libs/commons-validator-1.5.0.jar')
 }

@@ -8,7 +8,8 @@ public enum InvoiceTypes {
     MASTER_CARD("Master Card"),
     AMERICAN_EXPRESS("American Express"),
     MAESTRO("Maestro"),
-    DISCOVER("Discover")
+    DISCOVER("Discover"),
+    OTHER("Other")
     ;
 
     private final String text;

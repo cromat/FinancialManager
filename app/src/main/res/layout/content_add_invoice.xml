@@ -85,6 +85,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/bttn_save_invoice"
         android:text="@string/button_save"
         android:layout_below="@id/edit_balance"
         android:layout_centerHorizontal="true"

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="months_card_types">
-        <item>Master Card</item>
         <item>Visa</item>
-        <item>Visa Electron</item>
-        <item>Discover</item>
+        <item>Master Card</item>
         <item>American Express</item>
         <item>Maestro</item>
+        <item>Discover</item>
+        <item>Other</item>
     </string-array>
 </resources>
