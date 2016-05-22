@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.enums.InvoiceTypes;
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 import org.apache.commons.validator.routines.checkdigit.IBANCheckDigit;
 
@@ -31,43 +32,56 @@ public class AddInvoiceActivity extends AppCompatActivity {
     private Spinner spinnerExpiryMonth;
     private EditText editExpiryYear;
     private Spinner spinnerCardType;
+    private Spinner spinnerCurrency;
     private EditText editBalance;
     private Button buttonSave;
     private ArrayAdapter<CharSequence> adapterMonths;
-    ArrayAdapter<CharSequence> adapterCardTypes;
+    private ArrayAdapter<CharSequence> adapterCardTypes;
+    private ArrayAdapter<CharSequence> adapterCurrencies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                .applicationId("finmgr")
-                .server("http://finmgr-cromat.rhcloud.com/parse/")
-                .build()
-        );
+        try {
+            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                    .applicationId("finmgr")
+                    .server("http://finmgr-cromat.rhcloud.com/parse/")
+                    .build()
+            );
+        }
+        catch (IllegalStateException e){
+            e.printStackTrace();
+        }
 
         setContentView(R.layout.activity_add_invoice);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        editBalance = (EditText)findViewById(R.id.edit_balance);
-        editCardNumber = (EditText)findViewById(R.id.edit_card_number);
-        spinnerCardType = (Spinner)findViewById(R.id.spinner_card_type);
         editInvoiceName = (EditText)findViewById(R.id.edit_invoice_name);
-        editExpiryYear = (EditText)findViewById(R.id.edit_year_expiry);
         editInvoiceNumber = (EditText)findViewById(R.id.edit_invoice_number);
+        editCardNumber = (EditText)findViewById(R.id.edit_card_number);
+        editExpiryYear = (EditText)findViewById(R.id.edit_year_expiry);
         spinnerExpiryMonth = (Spinner)findViewById(R.id.spinner_month_expiry);
+        spinnerCardType = (Spinner)findViewById(R.id.spinner_card_type);
+        editBalance = (EditText)findViewById(R.id.edit_balance);
+        spinnerCurrency = (Spinner)findViewById(R.id.spinner_currency);
         buttonSave = (Button) findViewById(R.id.bttn_save_invoice);
 
         adapterMonths = ArrayAdapter.createFromResource(this,
                 R.array.months_array, android.R.layout.simple_spinner_item);
 
+        adapterCurrencies = ArrayAdapter.createFromResource(this,
+                R.array.currency_array, android.R.layout.simple_spinner_item);
+
         adapterCardTypes = ArrayAdapter.createFromResource(this,
                 R.array.months_array, android.R.layout.simple_spinner_item);
 
+        adapterCurrencies.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         adapterMonths.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapterCardTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        spinnerCurrency.setAdapter(adapterCurrencies);
         spinnerExpiryMonth.setAdapter(adapterMonths);
         spinnerCardType.setAdapter(adapterCardTypes);
 
@@ -84,18 +98,20 @@ public class AddInvoiceActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.subSequence(0,1) == "4")
-                    spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.VISA.toString()));
-                else if (Arrays.asList(new String[]{"51","52","53","54","55"}).contains(s.subSequence(0,2)))
-                    spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.MASTER_CARD.toString()));
-                else if (s.subSequence(0,2) == "37")
-                    spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.AMERICAN_EXPRESS.toString()));
-                else if (s.subSequence(0,2) == "65")
-                    spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.DISCOVER.toString()));
-                else if (s.subSequence(0,2) == "67")
-                    spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.MAESTRO.toString()));
-                else
-                    spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.OTHER.toString()));
+                if (s.length() >= 2){
+                    if (s.subSequence(0,1) == "4")
+                        spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.VISA.toString()));
+                    else if (Arrays.asList(new String[]{"51","52","53","54","55"}).contains(s.subSequence(0,2)))
+                        spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.MASTER_CARD.toString()));
+                    else if (s.subSequence(0,2) == "37")
+                        spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.AMERICAN_EXPRESS.toString()));
+                    else if (s.subSequence(0,2) == "65")
+                        spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.DISCOVER.toString()));
+                    else if (s.subSequence(0,2) == "67")
+                        spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.MAESTRO.toString()));
+                    else
+                        spinnerCardType.setSelection(adapterCardTypes.getPosition(InvoiceTypes.OTHER.toString()));
+                }
             }
         });
 
@@ -103,8 +119,23 @@ public class AddInvoiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            //TODO Parse on save!
+                ParseObject invoiceObj = new ParseObject("Invoices");
+                invoiceObj.put("name", editInvoiceName.getText().toString());
+                invoiceObj.put("invoice_number", editInvoiceNumber.getText().toString());
+                invoiceObj.put("card_number", editCardNumber.getText().toString());
 
+                String expDate = new String();
+                String expMonth = new String();
+                expMonth = Integer.toString(spinnerExpiryMonth.getSelectedItemPosition() + 1);
+                expDate = editExpiryYear.getText().toString() + "-" + ("00" + expMonth).substring(expMonth.length());
+
+                invoiceObj.put("card_expiry", expDate);
+                invoiceObj.put("card_type", spinnerCardType.getSelectedItem().toString());
+                invoiceObj.put("balance", editBalance.getText().toString());
+                invoiceObj.put("currency", spinnerCurrency.getSelectedItem().toString());
+
+                invoiceObj.saveInBackground();
+                finish();
             }
         });
 

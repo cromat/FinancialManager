@@ -34,6 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_invoice_number"
         android:hint="@string/edit_card_number"
+        android:inputType="number"
+        android:maxLength="16"
         />
 
     <Spinner
@@ -73,21 +75,41 @@
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/edit_balance"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/linear_balance_curerncy"
+        android:weightSum="5"
         android:layout_below="@id/linear_expiry"
-        android:hint="@string/edit_balance"
-        android:inputType="numberDecimal"
-        />
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:id="@+id/edit_balance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linear_expiry"
+            android:layout_weight="3"
+            android:hint="@string/edit_balance"
+            android:inputType="numberDecimal"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_currency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            />
+
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bttn_save_invoice"
         android:text="@string/button_save"
-        android:layout_below="@id/edit_balance"
+        android:textSize="20dp"
+        android:layout_below="@id/linear_balance_curerncy"
         android:layout_centerHorizontal="true"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"

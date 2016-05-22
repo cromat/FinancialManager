@@ -19,7 +19,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_image_invoice_type"
+                android:id="@+id/item_image_card_type"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="16dp"
@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_text_invoice_name"
-                android:layout_toRightOf="@+id/item_image_invoice_type"
+                android:layout_toRightOf="@+id/item_image_card_type"
                 android:layout_alignParentTop="true"
                 android:textSize="30sp"
                 />
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_text_invoice_number"
-                android:layout_toRightOf="@+id/item_image_invoice_type"
+                android:layout_toRightOf="@+id/item_image_card_type"
                 android:layout_below="@+id/item_text_invoice_name"
                 />
 
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_card_expiry"
-                android:layout_toRightOf="@+id/item_image_invoice_type"
+                android:layout_toRightOf="@+id/item_image_card_type"
                 android:layout_below="@+id/item_text_invoice_number"
                 />
 
@@ -56,6 +56,13 @@
                 android:id="@+id/item_text_balance"
                 android:layout_toRightOf="@+id/item_card_expiry"
                 android:layout_below="@+id/item_text_invoice_number"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_text_currency"
+                android:layout_toRightOf="@+id/item_text_balance"
                 />
 
         </RelativeLayout>

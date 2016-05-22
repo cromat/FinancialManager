@@ -14,4 +14,9 @@
     <string name="title_activity_invoice_details">InvoiceDetailsActivity</string>
     <string name="text_expiry_date">Expiry Date:</string>
     <string name="text_balance">Balance:</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
