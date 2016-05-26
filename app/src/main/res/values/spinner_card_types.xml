@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="months_card_types">
-        <item>Visa</item>
+    <string-array name="card_types">
+        <item>VISA</item>
         <item>Master Card</item>
         <item>American Express</item>
         <item>Maestro</item>

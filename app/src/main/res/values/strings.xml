@@ -12,11 +12,17 @@
     <string name="button_save">Save</string>
     <string name="edit_card_number">Card Number</string>
     <string name="title_activity_invoice_details">InvoiceDetailsActivity</string>
-    <string name="text_expiry_date">Expiry Date:</string>
-    <string name="text_balance">Balance:</string>
+    <string name="text_expiry_date">Expiry Date: </string>
+    <string name="label_balance">Balance: </string>
     <string name="title_activity_main2">Main2Activity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="edit_invoice_bank">Bank</string>
+    <string name="edit_invoice">Edit Invoice</string>
+    <string name="name">Name: </string>
+    <string name="label_invoice_number">Invoice Number: </string>
+    <string name="label_bank">Bank:</string>
+    <string name="label_card_type">Card Type:</string>
 </resources>

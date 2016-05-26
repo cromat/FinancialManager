@@ -1,8 +1,8 @@
 package com.example.mat.financialmanager.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,6 +27,7 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayoutManager layoutManager;
     private RecyclerView.Adapter adapterInvoices;
     public List<Invoice> invoices;
+    private boolean searching = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,35 +61,7 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Invoices");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> invoicesParse, ParseException e) {
-                if (e == null) {
-
-                    for (ParseObject invoiceObject : invoicesParse) {
-                        Invoice invoice = new Invoice();
-
-                        invoice.setId(invoiceObject.getObjectId());
-                        invoice.setName(invoiceObject.getString("name"));
-                        invoice.setInvoiceNumber(invoiceObject.getString("invoice_number"));
-                        invoice.setCardNumber(invoiceObject.getString("card_number"));
-                        invoice.setCardExpiry(invoiceObject.getString("card_expiry"));
-                        invoice.setCardType(invoiceObject.getString("card_type"));
-                        invoice.setBalance(invoiceObject.getDouble("balance"));
-                        invoice.setCurrency(invoiceObject.getString("currency"));
-
-                        invoices.add(invoice);
-                        recyclerInvoices.setAdapter(adapterInvoices);
-                        adapterInvoices.notifyItemInserted(invoices.size());
-                        adapterInvoices.notifyDataSetChanged();
-                    }
-                }
-                else {
-                    e.printStackTrace();
-                }
-            }
-        });
-
+        getInvoices();
 
         recyclerInvoices.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -103,8 +77,13 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (invoices.size() == 0 && searching == false){
+                    getInvoices();
+                }
+                adapterInvoices.notifyDataSetChanged();
+                adapterInvoices.notifyItemInserted(invoices.size());
+                if (invoices.size() > 0)
+                    searching = false;
             }
         });
 
@@ -132,6 +111,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         adapterInvoices.notifyDataSetChanged();
+        adapterInvoices.notifyItemInserted(invoices.size());
     }
 
     @Override
@@ -163,8 +143,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_invoices) {
-            // Handle the camera action
-        } else if (id == R.id.nav_shares) {
+
+        }
+
+        else if (id == R.id.nav_add_invoices) {
+            startActivity(new Intent(getApplicationContext(),AddEditInvoiceActivity.class));
+        }
+
+        else if (id == R.id.nav_shares) {
 
         } else if (id == R.id.nav_mutual_funds) {
 
@@ -179,5 +165,41 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getInvoices(){
+        searching = true;
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Invoices");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> invoicesParse, ParseException e) {
+                if (e == null) {
+
+                    for (ParseObject invoiceObject : invoicesParse) {
+                        Invoice invoice = new Invoice();
+
+                        invoice.setId(invoiceObject.getObjectId());
+                        invoice.setName(invoiceObject.getString("name"));
+                        invoice.setInvoiceNumber(invoiceObject.getString("invoice_number"));
+                        invoice.setCardNumber(invoiceObject.getString("card_number"));
+                        invoice.setCardExpiry(invoiceObject.getString("card_expiry"));
+                        invoice.setCardType(invoiceObject.getString("card_type"));
+                        String balanceTmp = invoiceObject.getString("balance");
+                        if (balanceTmp.equals(""))
+                            balanceTmp = "0";
+                        invoice.setBalance(Double.parseDouble(balanceTmp));
+                        invoice.setCurrency(invoiceObject.getString("currency"));
+                        invoice.setBank(invoiceObject.getString("bank"));
+
+                        invoices.add(invoice);
+                        recyclerInvoices.setAdapter(adapterInvoices);
+                        adapterInvoices.notifyItemInserted(invoices.size());
+                        adapterInvoices.notifyDataSetChanged();
+                    }
+                }
+                else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

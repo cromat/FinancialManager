@@ -3,7 +3,7 @@ package com.example.mat.financialmanager.enums;
 /**
  * Created by mat on 09.04.16..
  */
-public enum InvoiceTypes {
+public enum CardTypes {
     VISA("VISA"),
     MASTER_CARD("Master Card"),
     AMERICAN_EXPRESS("American Express"),
@@ -14,7 +14,7 @@ public enum InvoiceTypes {
 
     private final String text;
 
-    private InvoiceTypes(final String text) {
+    private CardTypes(final String text) {
         this.text = text;
     }
 

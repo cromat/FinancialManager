@@ -1,6 +1,7 @@
 package com.example.mat.financialmanager.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mat.financialmanager.R;
+import com.example.mat.financialmanager.activity.InvoiceDetailsActivity;
 import com.example.mat.financialmanager.model.Invoice;
 
 import java.util.Date;
@@ -34,7 +36,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
     }
 
     public InvoiceAdapter (List<Invoice> list) {
-
         this.invoices = list;
 
     }
@@ -46,7 +47,8 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
         ivh.cardExpiry.setText(invoices.get(i).getCardExpiry().toString());
         ivh.balance.setText(Double.toString(invoices.get(i).getBalance()));
         ivh.currency.setText(invoices.get(i).getCurrency());
-//        ivh.cardType.setText(invoices.get(i).getName());
+        ivh.bank.setText(invoices.get(i).getBank());
+        ivh.cardType.setImageDrawable(Invoice.getCardImage(invoices.get(i).getCardType().toString(),ivh.context));
     }
 
     public static class InvoiceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -57,6 +59,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
         public TextView balance;
         public TextView currency;
         public ImageView cardType;
+        public TextView bank;
         public Context context;
 
         public InvoiceViewHolder(View view) {
@@ -67,13 +70,16 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
             cardExpiry = (TextView) view.findViewById(R.id.item_card_expiry);
             balance = (TextView)view.findViewById(R.id.item_text_balance);
             currency = (TextView)view.findViewById(R.id.item_text_currency);
+            bank = (TextView)view.findViewById(R.id.item_text_invoice_bank);
             cardType = (ImageView)view.findViewById(R.id.item_image_card_type);
             context = itemView.getContext();
         }
 
         @Override
         public void onClick(View v) {
-
+            Intent intent = new Intent(v.getContext(), InvoiceDetailsActivity.class);
+            intent.putExtra("invoice",invoices.get(getAdapterPosition()));
+            context.startActivity(intent);
         }
 
     }

@@ -1,11 +1,12 @@
 package com.example.mat.financialmanager.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by mat on 22.05.16..
  */
-public class Share {
+public class Share implements Serializable{
 
     private String id;
     private String name;
