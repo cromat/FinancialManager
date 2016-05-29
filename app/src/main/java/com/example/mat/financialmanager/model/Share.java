@@ -15,10 +15,11 @@ public class Share implements Serializable{
     private double value;
     private double valuePerShare;
     private Date dateBought;
+    private String currency;
 
     public Share(){}
 
-    public Share(String id, String name, int quantity, String company, double value, double valuePerShare, Date dateBought) {
+    public Share(String id, String name, int quantity, String company, double value, double valuePerShare, Date dateBought, String currency) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
@@ -26,6 +27,7 @@ public class Share implements Serializable{
         this.value = value;
         this.valuePerShare = valuePerShare;
         this.dateBought = dateBought;
+        this.currency = currency;
     }
 
     public String getId() {
@@ -82,5 +84,13 @@ public class Share implements Serializable{
 
     public void setDateBought(Date dateBought) {
         this.dateBought = dateBought;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

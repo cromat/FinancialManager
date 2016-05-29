@@ -17,62 +17,109 @@
             android:padding="16dp"
             >
 
+            <!--Image card type-->
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_image_card_type"
+                android:foregroundGravity="top"
+                android:src="@drawable/visa"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="16dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginRight="23dp"
                 />
 
+            <!--Card Expiry-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:id="@+id/item_card_expiry"
+                android:layout_below="@+id/item_image_card_type"
+                android:hint="Card Expiry"
+                />
+
+            <!--Name-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_text_invoice_name"
                 android:layout_toRightOf="@+id/item_image_card_type"
                 android:layout_alignParentTop="true"
-                android:textSize="30sp"
+                android:textSize="25dp"
+                android:hint="Name"
+                android:textStyle="bold"
+                android:singleLine="true"
+                />
+
+            <!--Invoice number-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_text_invoice_number"
+                android:layout_toRightOf="@+id/item_image_card_type"
+                android:layout_below="@+id/item_text_invoice_name"
+                android:hint="Invoice Number"
+                android:singleLine="true"
+                />
+
+            <!--Bank-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_label_invoice_bank"
+                android:layout_toRightOf="@+id/item_image_card_type"
+                android:layout_below="@+id/item_text_invoice_number"
+                android:text="@string/label_bank"
+                android:singleLine="true"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_text_invoice_bank"
-                android:layout_toRightOf="@+id/item_image_card_type"
-                android:layout_below="@+id/item_text_invoice_name"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_text_invoice_number"
-                android:layout_toRightOf="@+id/item_image_card_type"
-                android:layout_below="@+id/item_text_invoice_bank"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_card_expiry"
-                android:layout_toRightOf="@+id/item_image_card_type"
+                android:layout_toRightOf="@+id/item_label_invoice_bank"
                 android:layout_below="@+id/item_text_invoice_number"
+                android:hint="Bank"
+                android:layout_alignParentRight="true"
+                android:textAlignment="textEnd"
+                android:gravity="end"
+                android:singleLine="true"
                 />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_text_balance"
+                android:layout_below="@+id/item_image_card_type"
                 android:layout_toRightOf="@+id/item_card_expiry"
-                android:layout_below="@+id/item_text_invoice_number"
-                />
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:gravity="end"
+                android:orientation="horizontal"
+                >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_text_currency"
-                android:layout_toRightOf="@+id/item_text_balance"
-                />
+                <!--Balance-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/item_text_balance"
+                    android:layout_toLeftOf="@+id/item_text_currency"
+                    android:hint="10000"
+                    android:singleLine="true"
+                    />
+
+                <!--Currency-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/item_text_currency"
+                    android:singleLine="true"
+                    android:hint="Currency"
+                    android:layout_below="@id/item_image_card_type"
+                    android:layout_marginLeft="3dp"
+                    />
+
+            </LinearLayout>
 
         </RelativeLayout>
 

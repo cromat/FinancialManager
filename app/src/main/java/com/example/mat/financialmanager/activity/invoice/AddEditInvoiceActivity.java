@@ -1,4 +1,4 @@
-package com.example.mat.financialmanager.activity;
+package com.example.mat.financialmanager.activity.invoice;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,35 +13,59 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.enums.CardTypes;
 import com.example.mat.financialmanager.model.Invoice;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.CreditCard;
+import com.mobsandgeeks.saripaar.annotation.Digits;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.Min;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.apache.commons.validator.routines.IBANValidator;
 import org.apache.commons.validator.routines.checkdigit.IBANCheckDigit;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 import java.util.regex.Pattern;
 
-public class AddEditInvoiceActivity extends AppCompatActivity {
+public class AddEditInvoiceActivity extends AppCompatActivity implements Validator.ValidationListener {
 
+    @NotEmpty
     private EditText editInvoiceName;
+    @NotEmpty
     private EditText editInvoiceNumber;
+    @NotEmpty
     private EditText editBank;
+    @NotEmpty
+    @Length(max = 16, min = 16)
+    @CreditCard
     private EditText editCardNumber;
     private Spinner spinnerExpiryMonth;
+    @NotEmpty
+    @Length(min = 4, max = 4)
     private EditText editExpiryYear;
     private Spinner spinnerCardType;
     private Spinner spinnerCurrency;
+    @NotEmpty
     private EditText editBalance;
     private Button buttonSave;
     private ArrayAdapter<CharSequence> adapterMonths;
     private ArrayAdapter<CharSequence> adapterCardTypes;
     private ArrayAdapter<CharSequence> adapterCurrencies;
+
+    private Validator validator;
+    private boolean validated;
 
     private Invoice invoice;
 
@@ -50,11 +74,14 @@ public class AddEditInvoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         invoice = new Invoice();
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+        validated = false;
 
         try {
             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                    .applicationId("finmgr")
-                    .server("http://finmgr-cromat.rhcloud.com/parse/")
+                    .applicationId(AppConfig.APP_ID)
+                    .server(AppConfig.PARSE_LINK)
                     .build()
             );
 
@@ -150,63 +177,84 @@ public class AddEditInvoiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ParseObject invoiceObj = new ParseObject("Invoices");
+                editInvoiceNumber.setText("HR8541330064321432143");
 
-                try {
-                    if (invoice != null) {
-                        ParseQuery query = new ParseQuery("Invoices");
-                        invoiceObj = query.get(invoice.getId());
+                if (!isInvoiceNumValid(editInvoiceNumber.getText().toString())){
+                    String message = "Wrong IBAN number!";
+                    editInvoiceNumber.setError(message);
+                }
+                validator.validate();
+
+                if (validated) {
+                    ParseObject invoiceObj = new ParseObject("Invoices");
+
+                    try {
+                        if (invoice != null) {
+                            ParseQuery query = new ParseQuery("Invoices");
+                            invoiceObj = query.get(invoice.getId());
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
+
+                    invoiceObj.put("name", editInvoiceName.getText().toString());
+                    invoiceObj.put("bank", editBank.getText().toString());
+                    invoiceObj.put("invoice_number", editInvoiceNumber.getText().toString());
+                    invoiceObj.put("card_number", editCardNumber.getText().toString());
+
+                    String expDate = new String();
+                    String expMonth = new String();
+                    expMonth = Integer.toString(spinnerExpiryMonth.getSelectedItemPosition() + 1);
+                    expDate = editExpiryYear.getText().toString() + "-" + ("00" + expMonth).substring(expMonth.length());
+
+                    invoiceObj.put("card_expiry", expDate);
+                    invoiceObj.put("card_type", spinnerCardType.getSelectedItem().toString());
+                    invoiceObj.put("balance", editBalance.getText().toString());
+                    invoiceObj.put("currency", spinnerCurrency.getSelectedItem().toString());
+
+                    invoiceObj.saveInBackground();
+                    finish();
                 }
-                catch (ParseException e){
-                    e.printStackTrace();
-                }
-
-
-                invoiceObj.put("name", editInvoiceName.getText().toString());
-                invoiceObj.put("bank", editBank.getText().toString());
-                invoiceObj.put("invoice_number", editInvoiceNumber.getText().toString());
-                invoiceObj.put("card_number", editCardNumber.getText().toString());
-
-                String expDate = new String();
-                String expMonth = new String();
-                expMonth = Integer.toString(spinnerExpiryMonth.getSelectedItemPosition() + 1);
-                expDate = editExpiryYear.getText().toString() + "-" + ("00" + expMonth).substring(expMonth.length());
-
-                invoiceObj.put("card_expiry", expDate);
-                invoiceObj.put("card_type", spinnerCardType.getSelectedItem().toString());
-                invoiceObj.put("balance", editBalance.getText().toString());
-                invoiceObj.put("currency", spinnerCurrency.getSelectedItem().toString());
-
-                invoiceObj.saveInBackground();
-                finish();
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
-    boolean isNameValid(String invName) {
-        if (invName.length() > 0)
-            return true;
-        return false;
-    }
 
-    boolean isCardNumValid(String cardNum) {
-        if ((Pattern.matches("[0-9]+", cardNum) && (cardNum.length() == 16)))
-            return true;
-        return false;
-    }
+//    boolean isCardNumValid(String cardNum) {
+//        if ((Pattern.matches("[0-9]+", cardNum) && (cardNum.length() == 16)))
+//            return true;
+//        return false;
+//    }
 
     boolean isInvoiceNumValid(String invoiceNum) {
         IBANCheckDigit iban = new IBANCheckDigit();
         return iban.isValid(invoiceNum);
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+        if (isInvoiceNumValid(editInvoiceNumber.getText().toString()))
+            validated = true;
+        else{
+            String message = "Wrong IBAN number!";
+            editInvoiceNumber.setError(message);
+            validated = false;
+        }
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            // Display error messages ;)
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(getApplicationContext(), "Inputs not valid!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

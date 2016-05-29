@@ -13,15 +13,17 @@ public class Fund implements Serializable{
     private double value;
     private String bank;
     private Date dateDue;
+    private String currency;
 
     public Fund(){}
 
-    public Fund(String id, String name, double value, String bank, Date dateDue) {
+    public Fund(String id, String name, double value, String bank, Date dateDue, String currency) {
         this.id = id;
         this.name = name;
         this.value = value;
         this.bank = bank;
         this.dateDue = dateDue;
+        this.currency = currency;
     }
 
     public String getId() {
@@ -62,5 +64,13 @@ public class Fund implements Serializable{
 
     public void setDateDue(Date dateDue) {
         this.dateDue = dateDue;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

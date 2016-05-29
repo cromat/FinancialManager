@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.mat.financialmanager.activity.InvoiceDetailsActivity"
+    tools:context=".activity.invoice.InvoiceDetailsActivity"
     tools:showIn="@layout/activity_invoice_details">
 
     <!--Name-->
@@ -29,7 +29,7 @@
         android:textAlignment="textEnd"
         android:layout_alignParentRight="true"
         android:gravity="end"
-         />
+        />
 
 
     <!--Invoice number-->
@@ -125,22 +125,46 @@
         android:layout_below="@id/text_card_type"
         />
 
-    <TextView
-        android:layout_width="match_parent"
+
+    <!--asfasfdfsafsfsfsdfs-->
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_balance"
-        android:layout_below="@id/text_card_type"
-        android:layout_toRightOf="@id/label_balance"
-        android:hint="Balance"
-        android:textAlignment="textEnd"
+        android:layout_below="@+id/label_card_type"
+        android:layout_toRightOf="@+id/label_balance"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:gravity="end"
-        />
+        android:id="@+id/linear_balance_currency"
+        android:orientation="horizontal"
+        >
+
+        <!--Balance-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_balance"
+            android:hint="10500"
+            />
+
+        <!--Currency-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_currency"
+            android:singleLine="true"
+            android:hint="USD"
+            android:layout_marginLeft="3dp" />
+
+    </LinearLayout>
+
+    <!--afadfasfs-->
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@id/text_balance"
+        android:layout_below="@id/linear_balance_currency"
         android:background="@drawable/credit_card_shape"
         android:layout_marginTop="50dp"
         >

@@ -85,7 +85,7 @@ public class Invoice implements Serializable {
     }
 
     public String getCardExpiryYear() {
-        SimpleDateFormat sdf = new SimpleDateFormat( "EEE MMM dd HH:mm:ss z yyyy", Locale.US );
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
         Calendar c = Calendar.getInstance();
         try {
             c.setTime(sdf.parse(cardExpiry.toString()));
@@ -127,6 +127,17 @@ public class Invoice implements Serializable {
                 return "Dec";
         }
         return null;
+    }
+
+    public static Date getDateFromString(String strDate){
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US );
+        Date date = new Date();
+        try {
+            date = format.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     public void setCardExpiry(Date cardExpiry) {

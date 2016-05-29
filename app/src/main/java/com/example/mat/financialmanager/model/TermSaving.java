@@ -13,8 +13,8 @@ public class TermSaving extends Fund {
     public TermSaving(){}
 
 
-    public TermSaving(String id, String name, double value, String bank, Date dateDue, double interest, double valueAfter) {
-        super(id, name, value, bank, dateDue);
+    public TermSaving(String id, String name, double value, String bank, Date dateDue, double interest, double valueAfter, String currency) {
+        super(id, name, value, bank, dateDue, currency);
         this.interest = interest;
         this.valueAfter = valueAfter;
     }

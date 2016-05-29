@@ -10,10 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mat.financialmanager.R;
-import com.example.mat.financialmanager.activity.InvoiceDetailsActivity;
+import com.example.mat.financialmanager.activity.invoice.InvoiceDetailsActivity;
 import com.example.mat.financialmanager.model.Invoice;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,10 +40,15 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
     }
 
     @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
     public void onBindViewHolder(InvoiceViewHolder ivh, int i) {
         ivh.name.setText(invoices.get(i).getName());
         ivh.invoiceNumber.setText(invoices.get(i).getInvoiceNumber());
-        ivh.cardExpiry.setText(invoices.get(i).getCardExpiry().toString());
+        ivh.cardExpiry.setText(invoices.get(i).getCardExpiryMonth() + " " + invoices.get(i).getCardExpiryYear());
         ivh.balance.setText(Double.toString(invoices.get(i).getBalance()));
         ivh.currency.setText(invoices.get(i).getCurrency());
         ivh.bank.setText(invoices.get(i).getBank());

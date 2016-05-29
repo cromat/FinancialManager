@@ -10,7 +10,7 @@ public class MutualFund extends Fund {
     public MutualFund() {
     }
 
-    public MutualFund(String id, String name, double value, String bank, Date dateDue) {
-        super(id, name, value, bank, dateDue);
+    public MutualFund(String id, String name, double value, String bank, Date dateDue, String currency) {
+        super(id, name, value, bank, dateDue, currency);
     }
 }

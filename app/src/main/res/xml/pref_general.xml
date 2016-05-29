@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/currency_array"
+        android:entryValues="@array/currency_array"
+        android:key="pref_currency"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_default_currency" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:title="@string/pref_use_default_currency"
+        android:key="pref_check_default_currency"
+        />
+
+</PreferenceScreen>

@@ -11,8 +11,8 @@ public class PensionFund extends Fund{
 
     public PensionFund(){}
 
-    public PensionFund(String id, String name, double value, String bank, Date dateDue, double monthlyTax) {
-        super(id, name, value, bank, dateDue);
+    public PensionFund(String id, String name, double value, String bank, Date dateDue, double monthlyTax, String currency) {
+        super(id, name, value, bank, dateDue, currency);
         this.monthlyTax = monthlyTax;
     }
 

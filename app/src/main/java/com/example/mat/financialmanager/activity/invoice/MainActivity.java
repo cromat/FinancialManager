@@ -1,7 +1,8 @@
-package com.example.mat.financialmanager.activity;
+package com.example.mat.financialmanager.activity.invoice;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.UiThread;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,16 +15,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
+import com.example.mat.financialmanager.SettingsActivity;
 import com.example.mat.financialmanager.adapter.InvoiceAdapter;
 import com.example.mat.financialmanager.model.Invoice;
+import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
+import com.example.mat.financialmanager.sqlite.SQLiteInvoice;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +39,13 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView recyclerInvoices;
+    private TextView textNoInvoices;
     private LinearLayoutManager layoutManager;
     private RecyclerView.Adapter adapterInvoices;
     public List<Invoice> invoices;
     private boolean searching = false;
+    private SQLiteInvoice db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +54,23 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        db = new SQLiteInvoice(getApplicationContext());
+//        db.onUpgrade(db.getWritableDatabase(),1,2);
+
+        SQLiteCurrencies dbCurr = new SQLiteCurrencies(getApplicationContext());
+        dbCurr.updateTable(getApplicationContext());
+
         invoices = new ArrayList<Invoice>();
+
         recyclerInvoices = (RecyclerView)findViewById(R.id.recycler_main);
+        textNoInvoices = (TextView)findViewById(R.id.text_no_invoices);
 
-
+        getInvoices();
 
         try {
             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                    .applicationId("finmgr")
-                    .server("http://finmgr-cromat.rhcloud.com/parse/")
+                    .applicationId(AppConfig.APP_ID)
+                    .server(AppConfig.PARSE_LINK)
                     .build()
             );
 
@@ -61,29 +79,30 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        getInvoices();
-
         recyclerInvoices.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerInvoices.setLayoutManager(layoutManager);
-
         adapterInvoices = new InvoiceAdapter(invoices);
         recyclerInvoices.setAdapter(adapterInvoices);
-        adapterInvoices.notifyItemInserted(invoices.size());
-        adapterInvoices.notifyDataSetChanged();
 
+        parseFetchInvoices();
+        getInvoices();
+
+        dataSetChanged();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (invoices.size() == 0 && searching == false){
-                    getInvoices();
-                }
-                adapterInvoices.notifyDataSetChanged();
-                adapterInvoices.notifyItemInserted(invoices.size());
-                if (invoices.size() > 0)
-                    searching = false;
+//                if (invoices.size() == 0 && searching == false){
+//                    parseFetchInvoices();
+//                }
+//
+//                dataSetChanged();
+//
+//                if (invoices.size() > 0)
+//                    searching = false;
+        db.onUpgrade(db.getWritableDatabase(),1,2);
             }
         });
 
@@ -130,7 +149,10 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+        }
+        else if (id == R.id.action_add_invoice) {
+            startActivity(new Intent(getApplicationContext(), AddEditInvoiceActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -167,7 +189,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void getInvoices(){
+    public void parseFetchInvoices(){
         searching = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Invoices");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -190,10 +212,8 @@ public class MainActivity extends AppCompatActivity
                         invoice.setCurrency(invoiceObject.getString("currency"));
                         invoice.setBank(invoiceObject.getString("bank"));
 
-                        invoices.add(invoice);
-                        recyclerInvoices.setAdapter(adapterInvoices);
-                        adapterInvoices.notifyItemInserted(invoices.size());
-                        adapterInvoices.notifyDataSetChanged();
+                        db.updateOrInsertInvoice(invoice);
+                        dataSetChanged();
                     }
                 }
                 else {
@@ -201,5 +221,38 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    public void getInvoices(){
+        try {
+            invoices = db.getInvoices();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+        dataSetChanged();
+
+        if (invoices.size() == 0){
+            textNoInvoices.setVisibility(View.VISIBLE);
+            recyclerInvoices.setVisibility(View.GONE);
+        }
+
+        else if (invoices.size() > 0){
+            textNoInvoices.setVisibility(View.GONE);
+            recyclerInvoices.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @UiThread
+    protected void dataSetChanged() {
+        try {
+            adapterInvoices = new InvoiceAdapter(invoices);
+            adapterInvoices.notifyItemInserted(invoices.size());
+            recyclerInvoices.setAdapter(adapterInvoices);
+        }
+        catch (NullPointerException ex) {
+            ex.printStackTrace();
+        }
     }
 }
