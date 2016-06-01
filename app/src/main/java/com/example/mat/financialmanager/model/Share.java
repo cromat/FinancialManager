@@ -9,6 +9,7 @@ import java.util.Date;
 public class Share implements Serializable{
 
     private String id;
+    private String userId;
     private String name;
     private int quantity;
     private  String company;
@@ -19,8 +20,9 @@ public class Share implements Serializable{
 
     public Share(){}
 
-    public Share(String id, String name, int quantity, String company, double value, double valuePerShare, Date dateBought, String currency) {
+    public Share(String id, String userId, String name, int quantity, String company, double value, double valuePerShare, Date dateBought, String currency) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.quantity = quantity;
         this.company = company;
@@ -92,5 +94,13 @@ public class Share implements Serializable{
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

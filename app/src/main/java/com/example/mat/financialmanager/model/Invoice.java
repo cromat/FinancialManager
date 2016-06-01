@@ -22,6 +22,7 @@ import java.util.Locale;
  */
 public class Invoice implements Serializable {
     private String id;
+    private String userId;
     private String name;
     private String invoiceNumber;
     private String cardNumber;
@@ -35,9 +36,10 @@ public class Invoice implements Serializable {
         this.id = null;
     }
 
-    public Invoice(String id, String name, String invoiceNumber, String cardNumber,
+    public Invoice(String id, String userId, String name, String invoiceNumber, String cardNumber,
                    Date cardExpiry, String cardType, double balance, String currency, String bank) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.invoiceNumber = invoiceNumber;
         this.cardNumber = cardNumber;
@@ -187,6 +189,14 @@ public class Invoice implements Serializable {
 
     public void setBank(String bank) {
         this.bank = bank;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public static Drawable getCardImage(String cardType, Context context){

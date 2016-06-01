@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".activity.share.AddEditShareActivity">
+
+    <EditText
+        android:id="@+id/edit_share_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_share_name"
+        />
+
+    <EditText
+        android:id="@+id/edit_share_quantity"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_share_quantity"
+        android:layout_below="@+id/edit_share_name"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_share_value"
+        android:weightSum="5"
+        android:layout_below="@id/edit_share_quantity"
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:id="@+id/edit_share_value"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_share_value"
+            android:inputType="numberDecimal"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_share_currency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_share_value_per_one"
+        android:weightSum="5"
+        android:layout_below="@id/linear_share_value"
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:id="@+id/edit_share_value_per_one"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="@string/edit_share_per_one"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_share_currency_per_one"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/edit_share_company"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_share_company"
+        android:layout_below="@+id/linear_share_value_per_one"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_share_date_bought"
+        android:layout_below="@+id/edit_share_company"
+        android:text="@string/date_bought"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        />
+
+    <Button
+        android:id="@+id/bttn_fund_date_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/text_share_date_bought"
+        android:layout_below="@+id/edit_share_company"
+        android:text="@string/date_bought"
+        android:onClick="showDatePickerDialog"
+        />
+
+
+</RelativeLayout>

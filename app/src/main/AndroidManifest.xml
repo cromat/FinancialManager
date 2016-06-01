@@ -31,7 +31,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".activity.fund.AddEditFundActivity" />
+        <activity android:name=".activity.share.AddEditShareActivity" />
+        <activity
+            android:name=".activity.fund.FundDetailsActivity"
+            android:label="@string/title_activity_fund_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

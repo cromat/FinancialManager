@@ -30,6 +30,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.apache.commons.validator.routines.IBANValidator;
 import org.apache.commons.validator.routines.checkdigit.IBANCheckDigit;
@@ -197,6 +198,7 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
                         e.printStackTrace();
                     }
 
+                    invoiceObj.put("user_id", ParseUser.getCurrentUser().getObjectId());
                     invoiceObj.put("name", editInvoiceName.getText().toString());
                     invoiceObj.put("bank", editBank.getText().toString());
                     invoiceObj.put("invoice_number", editInvoiceNumber.getText().toString());
@@ -212,6 +214,12 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
                     invoiceObj.put("balance", editBalance.getText().toString());
                     invoiceObj.put("currency", spinnerCurrency.getSelectedItem().toString());
 
+                    // TODO: Check for network. If not available save to sql base and add to
+                    // updating queue or generate id than save it locally
+
+
+                    // Invoice invoice = new Invoice()
+
                     invoiceObj.saveInBackground();
                     finish();
                 }
@@ -220,12 +228,6 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
 
     }
 
-
-//    boolean isCardNumValid(String cardNum) {
-//        if ((Pattern.matches("[0-9]+", cardNum) && (cardNum.length() == 16)))
-//            return true;
-//        return false;
-//    }
 
     boolean isInvoiceNumValid(String invoiceNum) {
         IBANCheckDigit iban = new IBANCheckDigit();

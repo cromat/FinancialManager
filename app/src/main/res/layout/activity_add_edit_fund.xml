@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.mat.financialmanager.activity.fund.AddEditFundActivity">
+
+    <!--Name-->
+    <EditText
+        android:id="@+id/edit_fund_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_fund_name"
+        />
+
+    <!--Fund type-->
+    <Spinner
+        android:id="@+id/spinner_fund_type"
+        android:layout_below="@+id/edit_fund_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <!--Value-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_fund_value"
+        android:weightSum="5"
+        android:layout_below="@id/spinner_fund_type"
+        android:orientation="horizontal"
+        >
+
+
+        <EditText
+            android:id="@+id/edit_fund_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_fund_value"
+            android:inputType="numberDecimal"
+            android:layout_weight="3"
+            />
+
+        <!--Currency-->
+        <Spinner
+            android:id="@+id/spinner_fund_currency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            />
+
+    </LinearLayout>
+
+
+    <!--Bank-->
+    <EditText
+        android:id="@+id/edit_fund_bank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear_fund_value"
+        android:hint="@string/edit_fund_bank"
+        />
+
+
+    <!--Date due-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_fund_date_to"
+        android:layout_below="@+id/edit_fund_bank"
+        android:text="@string/date_to"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        />
+
+    <Button
+        android:id="@+id/bttn_fund_date_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="45dp"
+        android:paddingRight="45dp"
+        android:layout_toRightOf="@+id/text_fund_date_to"
+        android:layout_below="@+id/edit_fund_bank"
+        android:text="@string/btn_date_to"
+        android:onClick="showDatePickerDialog"
+        />
+
+    <!--Monthly tax-->
+    <EditText
+        android:id="@+id/edit_fund_monthly_tax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_fund_monthly_tax"
+        android:inputType="numberDecimal"
+        android:layout_weight="3"
+        android:layout_below="@+id/text_fund_date_to"
+        android:visibility="gone"
+        />
+
+    <!--Term saving-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linear_term_saving"
+        android:layout_below="@+id/text_fund_date_to"
+        android:visibility="gone"
+        >
+
+        <EditText
+            android:id="@+id/edit_fund_interest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_fund_interest"
+            android:inputType="numberDecimal"
+            android:layout_weight="3"
+            />
+
+        <EditText
+            android:id="@+id/edit_fund_value_after"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_fund_value_after"
+            android:inputType="numberDecimal"
+            android:layout_weight="3"
+            />
+
+    </LinearLayout>
+
+    <!--Save-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bttn_save_fund"
+        android:text="@string/button_save"
+        android:textSize="20dp"
+        android:layout_below="@id/linear_term_saving"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_marginTop="20dp"
+        />
+
+
+</RelativeLayout>

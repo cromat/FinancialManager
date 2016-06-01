@@ -1,6 +1,7 @@
 package com.example.mat.financialmanager.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -9,21 +10,25 @@ import java.util.Date;
 public class Fund implements Serializable{
 
     private String id;
+    private String userId;
     private String name;
     private double value;
     private String bank;
     private Date dateDue;
     private String currency;
+    private String fundType;
 
     public Fund(){}
 
-    public Fund(String id, String name, double value, String bank, Date dateDue, String currency) {
+    public Fund(String id, String userId, String name, double value, String bank, Date dateDue, String currency, String fundType) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.value = value;
         this.bank = bank;
         this.dateDue = dateDue;
         this.currency = currency;
+        this.fundType = fundType;
     }
 
     public String getId() {
@@ -73,4 +78,32 @@ public class Fund implements Serializable{
     public void setCurrency(String currency) {
         this.currency = currency;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getStringCroDate(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateDue);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+
+        return Integer.toString(day) + "." + Integer.toString(month) + "." + Integer.toString(year) + ".";
+    }
+
+    public String getFundType() {
+        return fundType;
+    }
+
+    public void setFundType(String fundType) {
+        this.fundType = fundType;
+    }
+
+
 }

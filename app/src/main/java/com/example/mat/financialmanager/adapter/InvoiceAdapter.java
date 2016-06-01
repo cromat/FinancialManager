@@ -2,16 +2,23 @@ package com.example.mat.financialmanager.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mat.financialmanager.AppConfig;
+import com.example.mat.financialmanager.DecimalDigitsInputFilter;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.activity.invoice.InvoiceDetailsActivity;
+import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Invoice;
+import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
 
 import java.util.List;
 
@@ -49,8 +56,24 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
         ivh.name.setText(invoices.get(i).getName());
         ivh.invoiceNumber.setText(invoices.get(i).getInvoiceNumber());
         ivh.cardExpiry.setText(invoices.get(i).getCardExpiryMonth() + " " + invoices.get(i).getCardExpiryYear());
-        ivh.balance.setText(Double.toString(invoices.get(i).getBalance()));
-        ivh.currency.setText(invoices.get(i).getCurrency());
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ivh.context);
+        boolean useDefaultCurrency = prefs.getBoolean(AppConfig.PREF_DEFAULT_CURRENCY, false);
+
+        ivh.balance.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
+
+        if (useDefaultCurrency){
+            String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
+            SQLiteCurrencies dbCurr = new SQLiteCurrencies(ivh.context);
+            double balanceRecalc = dbCurr.getFromTo(invoices.get(i).getCurrency(), defaultCurr, invoices.get(i).getBalance());
+
+            ivh.balance.setText(Double.toString(balanceRecalc));
+            ivh.currency.setText(defaultCurr);
+        }
+        else {
+            ivh.balance.setText(Double.toString(invoices.get(i).getBalance()));
+            ivh.currency.setText(invoices.get(i).getCurrency());
+        }
         ivh.bank.setText(invoices.get(i).getBank());
         ivh.cardType.setImageDrawable(Invoice.getCardImage(invoices.get(i).getCardType().toString(),ivh.context));
     }

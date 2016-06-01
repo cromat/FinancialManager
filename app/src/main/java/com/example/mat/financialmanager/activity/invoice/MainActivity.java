@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.SettingsActivity;
+import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
 import com.example.mat.financialmanager.adapter.InvoiceAdapter;
 import com.example.mat.financialmanager.model.Invoice;
 import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
@@ -57,10 +58,12 @@ public class MainActivity extends AppCompatActivity
         db = new SQLiteInvoice(getApplicationContext());
 //        db.onUpgrade(db.getWritableDatabase(),1,2);
 
-        SQLiteCurrencies dbCurr = new SQLiteCurrencies(getApplicationContext());
+
+        final SQLiteCurrencies dbCurr = new SQLiteCurrencies(getApplicationContext());
+//        dbCurr.onUpgrade(dbCurr.getWritableDatabase(),1,2);
         dbCurr.updateTable(getApplicationContext());
 
-        invoices = new ArrayList<Invoice>();
+        invoices = new ArrayList<>();
 
         recyclerInvoices = (RecyclerView)findViewById(R.id.recycler_main);
         textNoInvoices = (TextView)findViewById(R.id.text_no_invoices);
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 //
 //                if (invoices.size() > 0)
 //                    searching = false;
-        db.onUpgrade(db.getWritableDatabase(),1,2);
+        dbCurr.onUpgrade(dbCurr.getWritableDatabase(),1,2);
             }
         });
 
@@ -172,6 +175,10 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(),AddEditInvoiceActivity.class));
         }
 
+        else if (id == R.id.nav_add_fund) {
+            startActivity(new Intent(getApplicationContext(),AddEditFundActivity.class));
+        }
+
         else if (id == R.id.nav_shares) {
 
         } else if (id == R.id.nav_mutual_funds) {
@@ -179,8 +186,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_pension_funds) {
 
         } else if (id == R.id.nav_savings) {
-
-        } else if (id == R.id.nav_send) {
 
         }
 

@@ -29,6 +29,7 @@ public class SQLiteInvoice extends SQLiteOpenHelper {
 
     // Table columns
     private static final String COLUMN_ID = "id";
+    private static final String COLUMN_USER_ID = "user_id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_INVOICE_NUMBER = "invoice_number";
     private static final String COLUMN_CARD_NUMBER = "card_number";
@@ -46,6 +47,7 @@ public class SQLiteInvoice extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_INVOICE_TABLE = "CREATE TABLE " + TABLE_INVOICES + "("
                 + COLUMN_ID + " TEXT PRIMARY KEY,"
+                + COLUMN_USER_ID + " TEXT,"
                 + COLUMN_NAME + " TEXT,"
                 + COLUMN_INVOICE_NUMBER + " TEXT,"
                 + COLUMN_CARD_NUMBER + " TEXT,"
@@ -63,6 +65,7 @@ public class SQLiteInvoice extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, invoice.getName());
         values.put(COLUMN_NAME, invoice.getName());
         values.put(COLUMN_INVOICE_NUMBER, invoice.getInvoiceNumber());
         values.put(COLUMN_CARD_NUMBER, invoice.getCardNumber());
@@ -102,6 +105,7 @@ public class SQLiteInvoice extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, invoice.getId());
+        values.put(COLUMN_USER_ID, invoice.getId());
         values.put(COLUMN_NAME, invoice.getName());
         values.put(COLUMN_INVOICE_NUMBER, invoice.getInvoiceNumber());
         values.put(COLUMN_CARD_NUMBER, invoice.getCardNumber());
@@ -129,14 +133,15 @@ public class SQLiteInvoice extends SQLiteOpenHelper {
                         Invoice inv = new Invoice();
 
                         inv.setId(cursor.getString(0));
-                        inv.setName(cursor.getString(1));
-                        inv.setInvoiceNumber(cursor.getString(2));
-                        inv.setCardNumber(cursor.getString(3));
-                        inv.setCardExpiry(Invoice.getDateFromString(cursor.getString(4)));
-                        inv.setCardType(cursor.getString(5));
-                        inv.setBalance(cursor.getDouble(6));
-                        inv.setCurrency(cursor.getString(7));
-                        inv.setBank(cursor.getString(8));
+                        inv.setUserId(cursor.getString(1));
+                        inv.setName(cursor.getString(2));
+                        inv.setInvoiceNumber(cursor.getString(3));
+                        inv.setCardNumber(cursor.getString(4));
+                        inv.setCardExpiry(Invoice.getDateFromString(cursor.getString(5)));
+                        inv.setCardType(cursor.getString(6));
+                        inv.setBalance(cursor.getDouble(7));
+                        inv.setCurrency(cursor.getString(8));
+                        inv.setBank(cursor.getString(9));
 
                         invoices.add(inv);
                     } while (cursor.moveToNext());

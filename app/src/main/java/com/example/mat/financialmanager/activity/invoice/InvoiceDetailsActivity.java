@@ -1,18 +1,25 @@
 package com.example.mat.financialmanager.activity.invoice;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mat.financialmanager.AppConfig;
+import com.example.mat.financialmanager.DecimalDigitsInputFilter;
 import com.example.mat.financialmanager.R;
+import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Invoice;
+import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
 import com.example.mat.financialmanager.sqlite.SQLiteInvoice;
 
 public class InvoiceDetailsActivity extends AppCompatActivity {
@@ -24,6 +31,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
     private TextView textExpiryDate;
     private TextView textCardType;
     private TextView textBalance;
+    private TextView textCurrency;
     private TextView textCardBank;
     private ImageView imageCardLogo;
     private TextView textCardNumber;
@@ -37,6 +45,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
         textExpiryDate = (TextView)findViewById( R.id.text_expiry_date );
         textCardType = (TextView)findViewById( R.id.text_card_type );
         textBalance = (TextView)findViewById( R.id.text_balance );
+        textCurrency = (TextView)findViewById( R.id.text_currency );
         textCardBank = (TextView)findViewById( R.id.text_card_bank );
         imageCardLogo = (ImageView)findViewById( R.id.image_card_logo );
         textCardNumber = (TextView)findViewById( R.id.text_card_number );
@@ -62,7 +71,26 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
         textBank.setText(invoice.getBank());
         textExpiryDate.setText(invoice.getCardExpiryMonth() + " " + invoice.getCardExpiryYear());
         textCardType.setText(invoice.getCardType());
-        textBalance.setText(Double.toString(invoice.getBalance()));
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean useDefaultCurrency = prefs.getBoolean(AppConfig.PREF_DEFAULT_CURRENCY, false);
+
+        textBalance.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
+
+        if (useDefaultCurrency){
+            String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
+            SQLiteCurrencies dbCurr = new SQLiteCurrencies(getApplicationContext());
+            double balanceRecalc = dbCurr.getFromTo(invoice.getCurrency(), defaultCurr, invoice.getBalance());
+
+            textBalance.setText(Double.toString(balanceRecalc));
+            textCurrency.setText(defaultCurr);
+        }
+        else {
+            textCurrency.setText(invoice.getCurrency());
+            textBalance.setText(Double.toString(invoice.getBalance()));
+        }
+
+
         textCardBank.setText(invoice.getBank());
         imageCardLogo.setImageDrawable(invoice.getCardImage(getApplicationContext()));
 

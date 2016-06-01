@@ -56,7 +56,7 @@ public class SQLiteCurrencies extends SQLiteOpenHelper {
                 + COLUMN_BASE + " TEXT PRIMARY KEY,"
                 + COLUM_HRK + " REAL,"
                 + COLUM_EUR + " REAL,"
-                + COLUM_USD + " REAL,"
+                + COLUM_USD + " REAL"
                 + ")";
         db.execSQL(CREATE_INVOICE_TABLE);
 
@@ -80,7 +80,7 @@ public class SQLiteCurrencies extends SQLiteOpenHelper {
 
 //      Default rates for USD base
         values = new ContentValues();
-        values.put(COLUMN_BASE, Currencies.EUR.toString());
+        values.put(COLUMN_BASE, Currencies.USD.toString());
         values.put(COLUM_HRK, 6.7071);
         values.put(COLUM_EUR, 0.89542);
         values.put(COLUM_USD, 1);
@@ -100,7 +100,7 @@ public class SQLiteCurrencies extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT " + currTo + "  FROM " + TABLE_CURRENCIES + " WHERE " + COLUMN_BASE + " = \'" +
+        String query = "SELECT " + currTo + " FROM " + TABLE_CURRENCIES + " WHERE " + COLUMN_BASE + " = \'" +
                 currFrom + "\'";
 
         Cursor mCount = db.rawQuery(query, null);

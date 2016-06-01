@@ -4,10 +4,18 @@
     android:padding="0dp"
     >
 
+    <!--
+    private String name;
+    private String bank;
+    private Date dateDue;
+    private double value;
+    private String currency;
+    -->
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cv_invoice"
+        android:id="@+id/cv_fund"
         android:layout_marginBottom="5dp"
         >
 
@@ -17,34 +25,24 @@
             android:padding="16dp"
             >
 
-            <!--Image card type-->
+            <!--Image fund type-->
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_image_card_type"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/item_image_fund_type"
                 android:foregroundGravity="top"
-                android:src="@drawable/visa"
+                android:src="@drawable/mutual_list"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginRight="23dp"
-                />
-
-            <!--Card Expiry-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:id="@+id/item_card_expiry"
-                android:layout_below="@+id/item_image_card_type"
-                android:hint="Card Expiry"
                 />
 
             <!--Name-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_text_invoice_name"
-                android:layout_toRightOf="@+id/item_image_card_type"
+                android:id="@+id/item_text_fund_name"
+                android:layout_toRightOf="@+id/item_image_fund_type"
                 android:layout_alignParentTop="true"
                 android:textSize="25dp"
                 android:hint="Name"
@@ -52,24 +50,13 @@
                 android:singleLine="true"
                 />
 
-            <!--invoice number-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_text_invoice_number"
-                android:layout_toRightOf="@+id/item_image_card_type"
-                android:layout_below="@+id/item_text_invoice_name"
-                android:hint="Invoice Number"
-                android:singleLine="true"
-                />
-
             <!--Bank-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_label_invoice_bank"
-                android:layout_toRightOf="@+id/item_image_card_type"
-                android:layout_below="@+id/item_text_invoice_number"
+                android:id="@+id/item_label_fund_bank"
+                android:layout_toRightOf="@+id/item_image_fund_type"
+                android:layout_below="@+id/item_text_fund_name"
                 android:text="@string/label_bank"
                 android:singleLine="true"
                 />
@@ -77,33 +64,67 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_text_invoice_bank"
-                android:layout_toRightOf="@+id/item_label_invoice_bank"
-                android:layout_below="@+id/item_text_invoice_number"
+                android:id="@+id/item_text_fund_bank"
+                android:layout_toRightOf="@+id/item_label_fund_bank"
+                android:layout_below="@+id/item_text_fund_name"
                 android:hint="Bank"
+                android:singleLine="true"
+                android:layout_alignParentRight="true"
+                android:textAlignment="textEnd"
+                android:gravity="end"
+                />
+
+            <!--Date due-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_label_fund_date_due"
+                android:layout_toRightOf="@+id/item_image_fund_type"
+                android:layout_below="@+id/item_label_fund_bank"
+                android:text="@string/label_date_due"
+                android:singleLine="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_text_fund_date_due"
+                android:layout_toRightOf="@+id/item_label_fund_date_due"
+                android:layout_below="@+id/item_text_fund_bank"
+                android:hint="Date due"
                 android:layout_alignParentRight="true"
                 android:textAlignment="textEnd"
                 android:gravity="end"
                 android:singleLine="true"
                 />
 
+            <!--Value label-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_label_fund_value"
+                android:text="@string/label_value"
+                android:singleLine="true"
+                android:layout_below="@id/item_label_fund_date_due"
+                android:layout_toRightOf="@+id/item_image_fund_type"
+                />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_image_card_type"
-                android:layout_toRightOf="@+id/item_card_expiry"
+                android:layout_below="@+id/item_label_fund_date_due"
+                android:layout_toRightOf="@+id/item_label_fund_value"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:gravity="end"
                 android:orientation="horizontal"
                 >
 
-                <!--Balance-->
+                <!--Value-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/item_text_balance"
-                    android:layout_toLeftOf="@+id/item_text_currency"
+                    android:id="@+id/item_fund_text_value"
                     android:hint="10000"
                     android:singleLine="true"
                     />
@@ -112,10 +133,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/item_text_currency"
+                    android:id="@+id/item_fund_text_currency"
                     android:singleLine="true"
                     android:hint="USD"
-                    android:layout_below="@id/item_image_card_type"
                     android:layout_marginLeft="3dp"
                     />
 

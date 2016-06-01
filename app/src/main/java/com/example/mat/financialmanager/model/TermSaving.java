@@ -13,8 +13,9 @@ public class TermSaving extends Fund {
     public TermSaving(){}
 
 
-    public TermSaving(String id, String name, double value, String bank, Date dateDue, double interest, double valueAfter, String currency) {
-        super(id, name, value, bank, dateDue, currency);
+    public TermSaving(String id, String userId, String name, double value, String bank,
+                      Date dateDue, double interest, double valueAfter, String currency, String fundType) {
+        super(id, userId,name, value, bank, dateDue, currency, fundType);
         this.interest = interest;
         this.valueAfter = valueAfter;
     }

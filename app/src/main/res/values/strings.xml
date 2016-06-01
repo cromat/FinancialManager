@@ -87,4 +87,24 @@
     <string name="pref_use_default_currency">Use default currency</string>
     <string name="pref_default_currency">Set default currency</string>
     <string name="no_invoices">There are no invoices to show</string>
+    <string name="edit_fund_name">Fund Name</string>
+    <string name="edit_fund_value">Fund Value</string>
+    <string name="edit_fund_bank">Bank</string>
+    <string name="date_to">Date to:</string>
+    <string name="edit_fund_monthly_tax">Monthly Tax</string>
+    <string name="edit_fund_interest">Interest</string>
+    <string name="edit_fund_value_after">Value After</string>
+    <string name="edit_share_name">Share Name</string>
+    <string name="edit_share_quantity">Quantity</string>
+    <string name="edit_share_value">Share Value(All)</string>
+    <string name="edit_share_company">Company</string>
+    <string name="date_bought">Date Bought</string>
+    <string name="edit_share_per_one">Value per Share</string>
+    <string name="label_date_due">Date due:</string>
+    <string name="label_value">Value:</string>
+    <string name="title_activity_fund_details">FundDetailsActivity</string>
+    <string name="btn_date_to">Choose Date</string>
+    <string name="label_monthly_tax">Monthly Tax:</string>
+    <string name="label_fund_interest">Interest:</string>
+    <string name="label_fund_value_after">Value after:</string>
 </resources>
