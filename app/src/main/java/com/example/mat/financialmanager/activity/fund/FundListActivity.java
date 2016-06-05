@@ -1,33 +1,35 @@
-package com.example.mat.financialmanager.activity.invoice;
+package com.example.mat.financialmanager.activity.fund;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.UiThread;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.SettingsActivity;
-import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
-import com.example.mat.financialmanager.activity.fund.FundListActivity;
+import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
+import com.example.mat.financialmanager.activity.invoice.MainActivity;
 import com.example.mat.financialmanager.activity.share.ShareListActivity;
-import com.example.mat.financialmanager.adapter.InvoiceAdapter;
+import com.example.mat.financialmanager.adapter.FundAdapter;
 import com.example.mat.financialmanager.enums.FundTypes;
-import com.example.mat.financialmanager.model.Invoice;
-import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
-import com.example.mat.financialmanager.sqlite.SQLiteInvoice;
+import com.example.mat.financialmanager.model.Fund;
+import com.example.mat.financialmanager.model.PensionFund;
+import com.example.mat.financialmanager.model.TermSaving;
+import com.example.mat.financialmanager.sqlite.SQLiteFund;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -37,33 +39,43 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class MainActivity extends AppCompatActivity
+public class FundListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private RecyclerView recyclerInvoices;
-    private TextView textNoInvoices;
+    private RecyclerView recyclerFunds;
+    private TextView textNoFunds;
     private LinearLayoutManager layoutManager;
-    private RecyclerView.Adapter adapterInvoices;
-    public List<Invoice> invoices;
+    private RecyclerView.Adapter adapterFunds;
+    public List<Fund> funds;
     private boolean searching = false;
-    private SQLiteInvoice db;
+    private SQLiteFund db;
+
+    private String fundType;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_fund_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        db = new SQLiteInvoice(getApplicationContext());
-        invoices = new ArrayList<>();
+        try{
+            Intent i = getIntent();
+            fundType = (String) i.getSerializableExtra(AppConfig.FUND_TYPE.toString());
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
-        recyclerInvoices = (RecyclerView)findViewById(R.id.recycler_main);
-        textNoInvoices = (TextView)findViewById(R.id.text_no_invoices);
+        db = new SQLiteFund(getApplicationContext());
 
-        getInvoices();
+        funds = new ArrayList<>();
+
+        recyclerFunds = (RecyclerView)findViewById(R.id.recycler_fund);
+        textNoFunds= (TextView)findViewById(R.id.text_no_funds);
+
+        getFunds();
 
         try {
             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
@@ -77,18 +89,18 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        recyclerInvoices.setHasFixedSize(true);
+        recyclerFunds.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
-        recyclerInvoices.setLayoutManager(layoutManager);
-        adapterInvoices = new InvoiceAdapter(invoices);
-        recyclerInvoices.setAdapter(adapterInvoices);
+        recyclerFunds.setLayoutManager(layoutManager);
+        adapterFunds = new FundAdapter(funds);
+        recyclerFunds.setAdapter(adapterFunds);
 
-        parseFetchInvoices();
-        getInvoices();
+        parseFetchFunds();
+        getFunds();
 
         dataSetChanged();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_funds);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +137,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.fund_menu, menu);
         return true;
     }
 
@@ -140,8 +152,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         }
-        else if (id == R.id.action_add_invoice) {
-            startActivity(new Intent(getApplicationContext(), AddEditInvoiceActivity.class));
+        else if (id == R.id.action_add_fund) {
+            startActivity(new Intent(getApplicationContext(), AddEditFundActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -154,11 +166,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_invoices) {
-            if(!this.getClass().equals(MainActivity.class)) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-            else
-                dataSetChanged();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
         else if (id == R.id.nav_add_invoices) {
@@ -177,22 +185,33 @@ public class MainActivity extends AppCompatActivity
         }
 
         else if (id == R.id.nav_mutual_funds) {
+            if(!fundType.equals(FundTypes.MUTUAL_FUND.toString())){
                 Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
                 intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.MUTUAL_FUND.toString());
                 startActivity(intent);
-
+            }
+            else
+                dataSetChanged();
         }
 
         else if (id == R.id.nav_pension_funds) {
+            if(!fundType.equals(FundTypes.PENSION_FUND.toString())){
                 Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
                 intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.PENSION_FUND.toString());
                 startActivity(intent);
+            }
+            else
+                dataSetChanged();
         }
 
         else if (id == R.id.nav_savings) {
+            if(!fundType.equals(FundTypes.PENSION_FUND)){
                 Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
                 intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.TERM_SAVING.toString());
                 startActivity(intent);
+            }
+            else
+                dataSetChanged();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -200,31 +219,36 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void parseFetchInvoices(){
+    public void parseFetchFunds(){
         searching = true;
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Invoices");
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Funds")
+                .whereMatches("fund_type", fundType);
         query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> invoicesParse, ParseException e) {
+            public void done(List<ParseObject> fundsParse, ParseException e) {
                 if (e == null) {
 
-                    for (ParseObject invoiceObject : invoicesParse) {
-                        Invoice invoice = new Invoice();
+                    for (ParseObject fundObject : fundsParse) {
+                        Fund fund = Fund.getTypeConstructor(fundType);
 
-                        invoice.setId(invoiceObject.getObjectId());
-                        invoice.setUserId(invoiceObject.getString("user_id"));
-                        invoice.setName(invoiceObject.getString("name"));
-                        invoice.setInvoiceNumber(invoiceObject.getString("invoice_number"));
-                        invoice.setCardNumber(invoiceObject.getString("card_number"));
-                        invoice.setCardExpiry(invoiceObject.getString("card_expiry"));
-                        invoice.setCardType(invoiceObject.getString("card_type"));
-                        String balanceTmp = invoiceObject.getString("balance");
-                        if (balanceTmp.equals(""))
-                            balanceTmp = "0";
-                        invoice.setBalance(Double.parseDouble(balanceTmp));
-                        invoice.setCurrency(invoiceObject.getString("currency"));
-                        invoice.setBank(invoiceObject.getString("bank"));
+                        fund.setId(fundObject.getObjectId());
+                        fund.setUserId(fundObject.getString("user_id"));
+                        fund.setName(fundObject.getString("name"));
+                        fund.setBank(fundObject.getString("bank"));
+                        fund.setValue(Double.parseDouble(fundObject.getString("value")));
+                        fund.setCurrency(fundObject.getString("currency"));
+                        fund.setFundType(fundObject.getString("fund_type"));
+                        fund.setDateDue(Fund.getDateFromString("date_due"));
 
-                        db.updateOrInsertInvoice(invoice);
+                        if (fundType.equals(FundTypes.PENSION_FUND))
+                            ((PensionFund)fund).setMonthlyTax(Double.parseDouble(fundObject.getString("monthly_tax")));
+
+                        else if(fundType.equals(FundTypes.TERM_SAVING)){
+                            ((TermSaving)fund).setValueAfter(Double.parseDouble(fundObject.getString("value_after")));
+                            ((TermSaving)fund).setInterest(Double.parseDouble("interest"));
+
+                        }
+
+                        db.updateOrInsertFund(fund);
                         dataSetChanged();
                     }
                 }
@@ -235,9 +259,9 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public void getInvoices(){
+    public void getFunds(){
         try {
-            invoices = db.getInvoices();
+            funds = db.getFunds();
         }
         catch (NullPointerException e){
             e.printStackTrace();
@@ -245,26 +269,27 @@ public class MainActivity extends AppCompatActivity
 
         dataSetChanged();
 
-        if (invoices.size() == 0){
-            textNoInvoices.setVisibility(View.VISIBLE);
-            recyclerInvoices.setVisibility(View.GONE);
+        if (funds.size() == 0){
+            textNoFunds.setVisibility(View.VISIBLE);
+            recyclerFunds.setVisibility(View.GONE);
         }
 
-        else if (invoices.size() > 0){
-            textNoInvoices.setVisibility(View.GONE);
-            recyclerInvoices.setVisibility(View.VISIBLE);
+        else if (funds.size() > 0){
+            textNoFunds.setVisibility(View.GONE);
+            recyclerFunds.setVisibility(View.VISIBLE);
         }
     }
 
     @UiThread
     protected void dataSetChanged() {
         try {
-            adapterInvoices = new InvoiceAdapter(invoices);
-            adapterInvoices.notifyItemInserted(invoices.size());
-            recyclerInvoices.setAdapter(adapterInvoices);
+            adapterFunds= new FundAdapter(funds);
+            adapterFunds.notifyItemInserted(funds.size());
+            recyclerFunds.setAdapter(adapterFunds);
         }
         catch (NullPointerException ex) {
             ex.printStackTrace();
         }
     }
+
 }

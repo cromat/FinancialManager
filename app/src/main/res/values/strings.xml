@@ -103,8 +103,22 @@
     <string name="label_date_due">Date due:</string>
     <string name="label_value">Value:</string>
     <string name="title_activity_fund_details">FundDetailsActivity</string>
-    <string name="btn_date_to">Choose Date</string>
+    <string name="btn_choose_date">Choose Date</string>
     <string name="label_monthly_tax">Monthly Tax:</string>
     <string name="label_fund_interest">Interest:</string>
     <string name="label_fund_value_after">Value after:</string>
+    <string name="title_activity_fund_list">FundListActivity</string>
+    <string name="title_activity_share_list">ShareListActivity</string>
+    <string name="action_add_fund">Add Fund</string>
+    <string name="title_activity_share_details">ShareDetailsActivity</string>
+    <string name="label_per_share_value">Value per Share:</string>
+    <string name="label_share_quantity">Quantity:</string>
+    <string name="label_share_company">Company:</string>
+    <string name="label_share_date_bought">Bought:</string>
+    <string name="edit_fund">Edit Fund</string>
+    <string name="edit_share">Edit Share</string>
+    <string name="no_funds">There are no funds to show</string>
+    <string name="no_shares">There are no shares to show</string>
+    <string name="action_add_share">Add Share</string>
+
 </resources>

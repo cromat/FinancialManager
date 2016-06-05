@@ -70,10 +70,15 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
             ivh.value.setText(Double.toString(balanceRecalc));
             ivh.currency.setText(defaultCurr);
         }
+
         else {
             ivh.value.setText(Double.toString(funds.get(i).getValue()));
             ivh.currency.setText(funds.get(i).getCurrency());
         }
+
+        ivh.bank.setText(funds.get(i).getBank());
+
+        ivh.fundType.setImageDrawable(funds.get(i).getfundImage(ivh.context));
     }
 
     public static class FundViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -83,6 +88,7 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
         public TextView dateDue;
         public TextView currency;
         public TextView bank;
+        public ImageView fundType;
         public Context context;
 
         public FundViewHolder(View view) {
@@ -93,6 +99,7 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
             dateDue = (TextView) view.findViewById(R.id.item_text_fund_date_due);
             currency = (TextView)view.findViewById(R.id.item_fund_text_currency);
             bank = (TextView)view.findViewById(R.id.item_text_fund_bank);
+            fundType = (ImageView)view.findViewById(R.id.item_image_fund_type);
             context = itemView.getContext();
         }
 

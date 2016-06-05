@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -55,12 +57,14 @@ public class FundDetailsActivity extends AppCompatActivity {
             textFundMonthlyTax.setVisibility(View.VISIBLE);
             textFundMonthlyTax.setText(Double.toString(((PensionFund) fund).getMonthlyTax()));
         }
+
         else if(fund.getFundType().equals(FundTypes.TERM_SAVING.toString())) {
             textFundInterest.setVisibility(View.VISIBLE);
             textFundValueAfter.setVisibility(View.VISIBLE);
             textFundInterest.setText(Double.toString(((TermSaving)fund).getInterest()));
             textFundValueAfter.setText(Double.toString(((TermSaving)fund).getValueAfter()));
         }
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +74,26 @@ public class FundDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.fund_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_edit_fund) {
+            Intent intent = new Intent(getApplicationContext(), AddEditFundActivity.class);
+            intent.putExtra("fund", fund);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

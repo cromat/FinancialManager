@@ -1,7 +1,19 @@
 package com.example.mat.financialmanager.model;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+
+import com.example.mat.financialmanager.R;
+import com.example.mat.financialmanager.enums.CardTypes;
+
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by mat on 22.05.16..
@@ -11,10 +23,10 @@ public class Share implements Serializable{
     private String id;
     private String userId;
     private String name;
-    private int quantity;
-    private  String company;
     private double value;
     private double valuePerShare;
+    private int quantity;
+    private  String company;
     private Date dateBought;
     private String currency;
 
@@ -88,6 +100,19 @@ public class Share implements Serializable{
         this.dateBought = dateBought;
     }
 
+    public void setDateBought(String dateBought) {
+
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM");
+        Date date = new Date();
+        try {
+            date = formatter.parse(dateBought);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        this.dateBought = date;
+    }
+
     public String getCurrency() {
         return currency;
     }
@@ -103,4 +128,26 @@ public class Share implements Serializable{
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public String getStringCroDate(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateBought);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+
+        return Integer.toString(day) + "." + Integer.toString(month) + "." + Integer.toString(year) + ".";
+    }
+
+    public static Date getDateFromString(String strDate){
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US );
+        Date date = new Date();
+        try {
+            date = format.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
 }

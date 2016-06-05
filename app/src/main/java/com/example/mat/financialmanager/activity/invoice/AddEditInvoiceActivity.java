@@ -18,6 +18,9 @@ import android.widget.Toast;
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.enums.CardTypes;
+import com.example.mat.financialmanager.enums.Currencies;
+import com.example.mat.financialmanager.enums.FundTypes;
+import com.example.mat.financialmanager.enums.Months;
 import com.example.mat.financialmanager.model.Invoice;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -61,9 +64,9 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
     @NotEmpty
     private EditText editBalance;
     private Button buttonSave;
-    private ArrayAdapter<CharSequence> adapterMonths;
-    private ArrayAdapter<CharSequence> adapterCardTypes;
-    private ArrayAdapter<CharSequence> adapterCurrencies;
+    private ArrayAdapter<String> adapterMonths;
+    private ArrayAdapter<String> adapterCardTypes;
+    private ArrayAdapter<String> adapterCurrencies;
 
     private Validator validator;
     private boolean validated;
@@ -115,14 +118,14 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
         buttonSave = (Button) findViewById(R.id.bttn_save_invoice);
 
 
-        adapterMonths = ArrayAdapter.createFromResource(this,
-                R.array.months_array, android.R.layout.simple_spinner_item);
+        adapterMonths =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Months.getNames());
 
-        adapterCurrencies = ArrayAdapter.createFromResource(this,
-                R.array.currency_array, android.R.layout.simple_spinner_item);
+        adapterCurrencies =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Currencies.getNames());
 
-        adapterCardTypes = ArrayAdapter.createFromResource(this,
-                R.array.card_types, android.R.layout.simple_spinner_item);
+        adapterCardTypes =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, CardTypes.getNames());
 
         adapterCurrencies.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         adapterMonths.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -216,7 +219,6 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
 
                     // TODO: Check for network. If not available save to sql base and add to
                     // updating queue or generate id than save it locally
-
 
                     // Invoice invoice = new Invoice()
 

@@ -85,7 +85,7 @@
         android:paddingRight="45dp"
         android:layout_toRightOf="@+id/text_fund_date_to"
         android:layout_below="@+id/edit_fund_bank"
-        android:text="@string/btn_date_to"
+        android:text="@string/btn_choose_date"
         android:onClick="showDatePickerDialog"
         />
 

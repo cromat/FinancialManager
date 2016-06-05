@@ -1,5 +1,7 @@
 package com.example.mat.financialmanager.enums;
 
+import java.util.ArrayList;
+
 /**
  * Created by mat on 09.04.16..
  */
@@ -21,5 +23,17 @@ public enum CardTypes {
     @Override
     public String toString () {
         return text;
+    }
+
+    public static ArrayList<String> getNames(){
+        CardTypes[] cardTypes = values();
+
+        ArrayList<String> cardTypeNames = new ArrayList<String>();
+
+        for (int i = 0; i < cardTypes.length; i++) {
+            cardTypeNames.add(cardTypes[i].text);
+        }
+
+        return  cardTypeNames;
     }
 }

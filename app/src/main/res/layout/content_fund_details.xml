@@ -31,7 +31,6 @@
         android:gravity="end"
         />
 
-
     <!--Value-->
     <TextView
         android:layout_width="wrap_content"
@@ -41,17 +40,42 @@
         android:layout_below="@+id/label_fund_name"
         />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/text_fund_value"
-        android:layout_below="@id/label_fund_name"
+        android:layout_below="@+id/label_fund_name"
         android:layout_toRightOf="@+id/label_fund_value"
-        android:hint="Value"
-        android:textAlignment="textEnd"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:gravity="end"
-        />
+        android:id="@+id/linear_value_currency"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_fund_value"
+            android:layout_below="@id/label_fund_name"
+            android:layout_toRightOf="@+id/label_fund_value"
+            android:hint="Value"
+            android:textAlignment="textEnd"
+            android:layout_alignParentRight="true"
+            android:gravity="end"
+            />
+
+        <!--Currency-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_fund_currency"
+            android:singleLine="true"
+            android:hint="USD"
+            android:layout_marginLeft="3dp" />
+
+    </LinearLayout>
+
+
 
     <!--Bank-->
     <TextView
@@ -59,14 +83,14 @@
         android:layout_height="wrap_content"
         android:text="@string/label_bank"
         android:id="@+id/label_fund_bank"
-        android:layout_below="@id/text_fund_value"
+        android:layout_below="@id/label_fund_value"
         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/text_fund_bank"
-        android:layout_below="@id/text_fund_value"
+        android:layout_below="@id/linear_value_currency"
         android:layout_toRightOf="@+id/label_fund_bank"
         android:hint="Bank"
         android:textAlignment="textEnd"
@@ -112,6 +136,7 @@
             android:id="@+id/label_fund_monthly_tax"
             android:text="@string/label_monthly_tax"
             android:layout_alignParentLeft="true"
+            android:visibility="gone"
             />
 
         <TextView
@@ -122,6 +147,7 @@
             android:textAlignment="textEnd"
             android:layout_alignParentRight="true"
             android:gravity="end"
+            android:visibility="gone"
             />
 
         <!--Interest-->
@@ -132,6 +158,8 @@
             android:layout_height="wrap_content"
             android:text="@string/label_fund_interest"
             android:layout_below="@id/label_fund_monthly_tax"
+            android:visibility="gone"
+
             />
 
         <TextView

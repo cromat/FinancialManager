@@ -1,8 +1,19 @@
 package com.example.mat.financialmanager.model;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+
+import com.example.mat.financialmanager.R;
+import com.example.mat.financialmanager.enums.CardTypes;
+import com.example.mat.financialmanager.enums.FundTypes;
+
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by mat on 22.05.16..
@@ -105,5 +116,41 @@ public class Fund implements Serializable{
         this.fundType = fundType;
     }
 
+    public static Fund getTypeConstructor(String fundType){
 
+        if (fundType.equals(FundTypes.PENSION_FUND.toString()))
+            return new PensionFund();
+
+        else if (fundType.equals(FundTypes.MUTUAL_FUND.toString()))
+            return new MutualFund();
+
+        else if (fundType.equals(FundTypes.TERM_SAVING.toString()))
+            return new TermSaving();
+
+        return new Fund();
+    }
+
+    public static Date getDateFromString(String strDate){
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US );
+        Date date = new Date();
+        try {
+            date = format.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public Drawable getfundImage(Context context){
+
+        if (fundType.equals(FundTypes.TERM_SAVING.toString()))
+            return ContextCompat.getDrawable(context, R.drawable.saving_list);
+        else if (fundType.equals(FundTypes.PENSION_FUND.toString()))
+            return ContextCompat.getDrawable(context, R.drawable.pension_list);
+        else if (fundType.equals(FundTypes.MUTUAL_FUND.toString()))
+            return ContextCompat.getDrawable(context, R.drawable.mutual_list);
+
+        //TODO: Neki defaultni vratiti inace
+        return ContextCompat.getDrawable(context, R.drawable.other);
+    }
 }

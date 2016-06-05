@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
+import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.enums.FundTypes;
 import com.example.mat.financialmanager.model.Fund;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -43,8 +45,8 @@ public class AddEditFundActivity extends AppCompatActivity implements Validator.
     private EditText editFundInterest;
     @NotEmpty
     private EditText editFundValueAfter;
-    private ArrayAdapter<CharSequence> adapterFundTypes;
-    private ArrayAdapter<CharSequence> adapterCurrencies;
+    private ArrayAdapter<String> adapterFundTypes;
+    private ArrayAdapter<String> adapterCurrencies;
     private Button bttnSave;
 
 
@@ -99,25 +101,11 @@ public class AddEditFundActivity extends AppCompatActivity implements Validator.
             e.printStackTrace();
         }
 
-        if (fund.getFundType().equals(FundTypes.PENSION_FUND.toString())){
-            editFundMonthlyTax.setVisibility(View.VISIBLE);
+        adapterCurrencies =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Currencies.getNames());
 
-            editFundInterest.setText(AppConfig.NULL);
-            editFundValueAfter.setText(AppConfig.NULL);
-        }
-
-        else if(fund.getFundType().equals(FundTypes.TERM_SAVING.toString())){
-            editFundInterest.setVisibility(View.VISIBLE);
-            editFundValueAfter.setVisibility(View.VISIBLE);
-
-            editFundMonthlyTax.setText(AppConfig.NULL);
-        }
-
-        adapterCurrencies = ArrayAdapter.createFromResource(this,
-                R.array.currency_array, android.R.layout.simple_spinner_item);
-
-        adapterFundTypes = ArrayAdapter.createFromResource(this,
-                R.array.fund_array,android.R.layout.simple_spinner_item);
+        adapterFundTypes =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, FundTypes.getNames());
 
         adapterFundTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapterCurrencies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -126,6 +114,25 @@ public class AddEditFundActivity extends AppCompatActivity implements Validator.
         spinnerFundType.setAdapter(adapterFundTypes);
 
         if (fund != null){
+            if (fund.getFundType().equals(FundTypes.PENSION_FUND.toString())){
+                editFundMonthlyTax.setVisibility(View.VISIBLE);
+
+                editFundInterest.setText(AppConfig.NULL);
+                editFundValueAfter.setText(AppConfig.NULL);
+            }
+
+            else if(fund.getFundType().equals(FundTypes.TERM_SAVING.toString())){
+                editFundInterest.setVisibility(View.VISIBLE);
+                editFundValueAfter.setVisibility(View.VISIBLE);
+
+                editFundMonthlyTax.setText(AppConfig.NULL);
+            }
+
+            else if(fund.getFundType().equals(FundTypes.MUTUAL_FUND.toString())){
+                editFundInterest.setText(AppConfig.NULL);
+                editFundValueAfter.setText(AppConfig.NULL);
+                editFundMonthlyTax.setText(AppConfig.NULL);
+            }
             editFundName.setText(fund.getName());
             spinnerFundType.setSelection(adapterFundTypes.getPosition(fund.getFundType()));
             editFundValue.setText(Double.toString(fund.getValue()));
@@ -137,10 +144,57 @@ public class AddEditFundActivity extends AppCompatActivity implements Validator.
             editFundValueAfter = (EditText)findViewById( R.id.edit_fund_value_after );
         }
 
+        spinnerFundType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String selected = spinnerFundType.getSelectedItem().toString();
+
+                if (selected.equals(FundTypes.TERM_SAVING.toString())){
+
+                    editFundInterest.setVisibility(View.VISIBLE);
+                    editFundValueAfter.setVisibility(View.VISIBLE);
+
+                    editFundMonthlyTax.setVisibility(View.GONE);
+
+                    editFundMonthlyTax.setText(AppConfig.NULL);
+
+                }
+
+                else if (selected.equals(FundTypes.TERM_SAVING.toString())){
+
+                    editFundInterest.setVisibility(View.GONE);
+                    editFundValueAfter.setVisibility(View.GONE);
+
+                    editFundMonthlyTax.setVisibility(View.VISIBLE);
+
+                    editFundInterest.setText(AppConfig.NULL);
+                    editFundValueAfter.setText(AppConfig.NULL);
+
+                }
+
+                else if (selected.equals(FundTypes.MUTUAL_FUND.toString())){
+
+                    editFundInterest.setVisibility(View.GONE);
+                    editFundValueAfter.setVisibility(View.GONE);
+                    editFundMonthlyTax.setVisibility(View.GONE);
+
+                    editFundInterest.setText(AppConfig.NULL);
+                    editFundValueAfter.setText(AppConfig.NULL);
+                    editFundMonthlyTax.setText(AppConfig.NULL);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         bttnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bttnFundDateTo.getText().equals(getResources().getString(R.string.btn_date_to))) {
+                if (bttnFundDateTo.getText().equals(getResources().getString(R.string.btn_choose_date))) {
                     String message = "Date not choosen!";
                     bttnFundDateTo.setError(message);
                 } else
@@ -168,6 +222,8 @@ public class AddEditFundActivity extends AppCompatActivity implements Validator.
                     fundObj.put("date_due", bttnFundDateTo.getText());
                     fundObj.put("currency", spinnerFundCurrency.getSelectedItem().toString());
                     fundObj.put("fund_type", spinnerFundType.getSelectedItem().toString());
+                    fundObj.put("monthly_tax", editFundMonthlyTax.getText().toString());
+                    fundObj.put("interest", editFundInterest.getText().toString());
 
                     // TODO: Check for network. If not available save to sql base and add to
                     // updating queue or generate id than save it locally
@@ -182,7 +238,7 @@ public class AddEditFundActivity extends AppCompatActivity implements Validator.
 
     @Override
     public void onValidationSucceeded() {
-        if (bttnFundDateTo.getText().equals(getResources().getString(R.string.btn_date_to))){
+        if (bttnFundDateTo.getText().equals(getResources().getString(R.string.btn_choose_date))){
             String message = "Date not choosen!";
             bttnFundDateTo.setError(message);
         }

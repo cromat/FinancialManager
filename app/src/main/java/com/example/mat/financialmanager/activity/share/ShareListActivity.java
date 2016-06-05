@@ -1,20 +1,20 @@
-package com.example.mat.financialmanager.activity.invoice;
+package com.example.mat.financialmanager.activity.share;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.UiThread;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.mat.financialmanager.AppConfig;
@@ -22,12 +22,12 @@ import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.SettingsActivity;
 import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
 import com.example.mat.financialmanager.activity.fund.FundListActivity;
-import com.example.mat.financialmanager.activity.share.ShareListActivity;
-import com.example.mat.financialmanager.adapter.InvoiceAdapter;
+import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
+import com.example.mat.financialmanager.activity.invoice.MainActivity;
+import com.example.mat.financialmanager.adapter.ShareAdapter;
 import com.example.mat.financialmanager.enums.FundTypes;
-import com.example.mat.financialmanager.model.Invoice;
-import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
-import com.example.mat.financialmanager.sqlite.SQLiteInvoice;
+import com.example.mat.financialmanager.model.Share;
+import com.example.mat.financialmanager.sqlite.SQLiteShare;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -37,33 +37,32 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+public class ShareListActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
-    private RecyclerView recyclerInvoices;
-    private TextView textNoInvoices;
+    private RecyclerView recyclerShares;
+    private TextView textNoShares;
     private LinearLayoutManager layoutManager;
-    private RecyclerView.Adapter adapterInvoices;
-    public List<Invoice> invoices;
+    private RecyclerView.Adapter adapterShares;
+    public List<Share> shares;
     private boolean searching = false;
-    private SQLiteInvoice db;
+    private SQLiteShare db;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_share_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        db = new SQLiteInvoice(getApplicationContext());
-        invoices = new ArrayList<>();
+        db = new SQLiteShare(getApplicationContext());
+        shares = new ArrayList<>();
 
-        recyclerInvoices = (RecyclerView)findViewById(R.id.recycler_main);
-        textNoInvoices = (TextView)findViewById(R.id.text_no_invoices);
+        recyclerShares= (RecyclerView)findViewById(R.id.recycler_share);
+        textNoShares= (TextView)findViewById(R.id.text_no_shares);
 
-        getInvoices();
+        getShares();
 
         try {
             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
@@ -77,14 +76,14 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        recyclerInvoices.setHasFixedSize(true);
+        recyclerShares.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
-        recyclerInvoices.setLayoutManager(layoutManager);
-        adapterInvoices = new InvoiceAdapter(invoices);
-        recyclerInvoices.setAdapter(adapterInvoices);
+        recyclerShares.setLayoutManager(layoutManager);
+        adapterShares = new ShareAdapter(shares);
+        recyclerShares.setAdapter(adapterShares);
 
-        parseFetchInvoices();
-        getInvoices();
+        parseFetchShares();
+        getShares();
 
         dataSetChanged();
 
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.share_menu, menu);
         return true;
     }
 
@@ -140,8 +139,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         }
-        else if (id == R.id.action_add_invoice) {
-            startActivity(new Intent(getApplicationContext(), AddEditInvoiceActivity.class));
+        else if (id == R.id.action_add_share) {
+            startActivity(new Intent(getApplicationContext(), AddEditShareActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -177,22 +176,22 @@ public class MainActivity extends AppCompatActivity
         }
 
         else if (id == R.id.nav_mutual_funds) {
-                Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
-                intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.MUTUAL_FUND.toString());
-                startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
+            intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.MUTUAL_FUND.toString());
+            startActivity(intent);
 
         }
 
         else if (id == R.id.nav_pension_funds) {
-                Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
-                intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.PENSION_FUND.toString());
-                startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
+            intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.PENSION_FUND.toString());
+            startActivity(intent);
         }
 
         else if (id == R.id.nav_savings) {
-                Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
-                intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.TERM_SAVING.toString());
-                startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
+            intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.TERM_SAVING.toString());
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -200,31 +199,27 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void parseFetchInvoices(){
+    public void parseFetchShares(){
         searching = true;
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Invoices");
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Shares");
         query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> invoicesParse, ParseException e) {
+            public void done(List<ParseObject> sharesParse, ParseException e) {
                 if (e == null) {
 
-                    for (ParseObject invoiceObject : invoicesParse) {
-                        Invoice invoice = new Invoice();
+                    for (ParseObject shareObject : sharesParse) {
+                        Share share = new Share();
 
-                        invoice.setId(invoiceObject.getObjectId());
-                        invoice.setUserId(invoiceObject.getString("user_id"));
-                        invoice.setName(invoiceObject.getString("name"));
-                        invoice.setInvoiceNumber(invoiceObject.getString("invoice_number"));
-                        invoice.setCardNumber(invoiceObject.getString("card_number"));
-                        invoice.setCardExpiry(invoiceObject.getString("card_expiry"));
-                        invoice.setCardType(invoiceObject.getString("card_type"));
-                        String balanceTmp = invoiceObject.getString("balance");
-                        if (balanceTmp.equals(""))
-                            balanceTmp = "0";
-                        invoice.setBalance(Double.parseDouble(balanceTmp));
-                        invoice.setCurrency(invoiceObject.getString("currency"));
-                        invoice.setBank(invoiceObject.getString("bank"));
+                        share.setId(shareObject.getObjectId());
+                        share.setUserId(shareObject.getString("user_id"));
+                        share.setName(shareObject.getString("name"));
+                        share.setQuantity(shareObject.getInt("quantity"));
+                        share.setCompany(shareObject.getString("company"));
+                        share.setValue(Double.parseDouble(shareObject.getString("value")));
+                        share.setValuePerShare(Double.parseDouble(shareObject.getString("value_per_share")));
+                        share.setDateBought(shareObject.getString("date_bought"));
+                        share.setCurrency(shareObject.getString("currency"));
 
-                        db.updateOrInsertInvoice(invoice);
+                        db.updateOrInsertShare(share);
                         dataSetChanged();
                     }
                 }
@@ -235,9 +230,9 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public void getInvoices(){
+    public void getShares(){
         try {
-            invoices = db.getInvoices();
+            shares = db.getShares();
         }
         catch (NullPointerException e){
             e.printStackTrace();
@@ -245,26 +240,27 @@ public class MainActivity extends AppCompatActivity
 
         dataSetChanged();
 
-        if (invoices.size() == 0){
-            textNoInvoices.setVisibility(View.VISIBLE);
-            recyclerInvoices.setVisibility(View.GONE);
+        if (shares.size() == 0){
+            textNoShares.setVisibility(View.VISIBLE);
+            recyclerShares.setVisibility(View.GONE);
         }
 
-        else if (invoices.size() > 0){
-            textNoInvoices.setVisibility(View.GONE);
-            recyclerInvoices.setVisibility(View.VISIBLE);
+        else if (shares.size() > 0){
+            textNoShares.setVisibility(View.GONE);
+            recyclerShares.setVisibility(View.VISIBLE);
         }
     }
 
     @UiThread
     protected void dataSetChanged() {
         try {
-            adapterInvoices = new InvoiceAdapter(invoices);
-            adapterInvoices.notifyItemInserted(invoices.size());
-            recyclerInvoices.setAdapter(adapterInvoices);
+            adapterShares = new ShareAdapter(shares);
+            adapterShares.notifyItemInserted(shares.size());
+            recyclerShares.setAdapter(adapterShares);
         }
         catch (NullPointerException ex) {
             ex.printStackTrace();
         }
     }
+
 }

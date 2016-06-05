@@ -13,4 +13,5 @@ public class AppConfig {
     public static final String PREF_DEFAULT_CURRENCY = "pref_check_default_currency";
     public static final String PREF_CURRENCY = "pref_currency";
     public static final String NULL = "null";
+    public static final String FUND_TYPE = "fund_type";
 }

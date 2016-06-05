@@ -4,11 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.model.Invoice;
 
 import java.util.ArrayList;
@@ -65,7 +62,7 @@ public class SQLiteInvoice extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID, invoice.getName());
+        values.put(COLUMN_USER_ID, invoice.getUserId());
         values.put(COLUMN_NAME, invoice.getName());
         values.put(COLUMN_INVOICE_NUMBER, invoice.getInvoiceNumber());
         values.put(COLUMN_CARD_NUMBER, invoice.getCardNumber());
@@ -105,7 +102,7 @@ public class SQLiteInvoice extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, invoice.getId());
-        values.put(COLUMN_USER_ID, invoice.getId());
+        values.put(COLUMN_USER_ID, invoice.getUserId());
         values.put(COLUMN_NAME, invoice.getName());
         values.put(COLUMN_INVOICE_NUMBER, invoice.getInvoiceNumber());
         values.put(COLUMN_CARD_NUMBER, invoice.getCardNumber());

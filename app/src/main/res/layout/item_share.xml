@@ -7,7 +7,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cv_fund"
+        android:id="@+id/cv_share"
         android:layout_marginBottom="5dp"
         >
 
@@ -17,13 +17,13 @@
             android:padding="16dp"
             >
 
-            <!--Image fund type-->
+            <!--Image share-->
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:id="@+id/item_image_fund_type"
+                android:id="@+id/item_image_share_type"
                 android:foregroundGravity="top"
-                android:src="@drawable/mutual_list"
+                android:src="@drawable/share_list"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginRight="23dp"
@@ -33,8 +33,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_text_fund_name"
-                android:layout_toRightOf="@+id/item_image_fund_type"
+                android:id="@+id/item_text_share_name"
+                android:layout_toRightOf="@+id/item_image_share_type"
                 android:layout_alignParentTop="true"
                 android:textSize="25dp"
                 android:hint="Name"
@@ -42,48 +42,72 @@
                 android:singleLine="true"
                 />
 
-            <!--Bank-->
+            <!--Company-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_label_fund_bank"
-                android:layout_toRightOf="@+id/item_image_fund_type"
-                android:layout_below="@+id/item_text_fund_name"
-                android:text="@string/label_bank"
+                android:id="@+id/item_label_share_company"
+                android:layout_toRightOf="@+id/item_image_share_type"
+                android:layout_below="@+id/item_text_share_name"
+                android:text="@string/label_share_company"
                 android:singleLine="true"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_text_fund_bank"
-                android:layout_toRightOf="@+id/item_label_fund_bank"
-                android:layout_below="@+id/item_text_fund_name"
-                android:hint="Bank"
+                android:id="@+id/item_text_share_company"
+                android:layout_toRightOf="@+id/item_label_share_company"
+                android:layout_below="@+id/item_text_share_name"
+                android:hint="Company"
                 android:singleLine="true"
                 android:layout_alignParentRight="true"
                 android:textAlignment="textEnd"
                 android:gravity="end"
                 />
 
-            <!--Date due-->
+            <!--Quantity-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_label_fund_date_due"
-                android:layout_toRightOf="@+id/item_image_fund_type"
-                android:layout_below="@+id/item_label_fund_bank"
-                android:text="@string/label_date_due"
+                android:id="@+id/item_label_share_quantity"
+                android:layout_toRightOf="@+id/item_image_share_type"
+                android:layout_below="@+id/item_label_share_company"
+                android:text="@string/label_share_quantity"
                 android:singleLine="true"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_text_fund_date_due"
-                android:layout_toRightOf="@+id/item_label_fund_date_due"
-                android:layout_below="@+id/item_text_fund_bank"
-                android:hint="Date due"
+                android:id="@+id/item_text_share_quantity"
+                android:layout_toRightOf="@+id/item_label_share_quantity"
+                android:layout_below="@+id/item_text_share_company"
+                android:hint="Quantity"
+                android:layout_alignParentRight="true"
+                android:textAlignment="textEnd"
+                android:gravity="end"
+                android:singleLine="true"
+                />
+
+            <!--Date bought-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_label_share_date_bought"
+                android:layout_toRightOf="@+id/item_image_share_type"
+                android:layout_below="@+id/item_label_share_quantity"
+                android:text="@string/label_share_date_bought"
+                android:singleLine="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_text_share_date_bought"
+                android:layout_toRightOf="@+id/item_image_share_type"
+                android:layout_below="@+id/item_text_share_quantity"
+                android:hint="Date Bought"
                 android:layout_alignParentRight="true"
                 android:textAlignment="textEnd"
                 android:gravity="end"
@@ -94,18 +118,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_label_fund_value"
+                android:id="@+id/item_label_share_value"
                 android:text="@string/label_value"
                 android:singleLine="true"
-                android:layout_below="@id/item_label_fund_date_due"
-                android:layout_toRightOf="@+id/item_image_fund_type"
+                android:layout_below="@id/item_label_share_date_bought"
+                android:layout_toRightOf="@+id/item_image_share_type"
                 />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_label_fund_date_due"
-                android:layout_toRightOf="@+id/item_label_fund_value"
+                android:layout_below="@+id/item_text_share_date_bought"
+                android:layout_toRightOf="@+id/item_label_share_value"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:gravity="end"
@@ -116,7 +140,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/item_fund_text_value"
+                    android:id="@+id/item_share_text_value"
                     android:hint="10000"
                     android:singleLine="true"
                     />
@@ -125,7 +149,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/item_fund_text_currency"
+                    android:id="@+id/item_share_text_currency"
                     android:singleLine="true"
                     android:hint="USD"
                     android:layout_marginLeft="3dp"

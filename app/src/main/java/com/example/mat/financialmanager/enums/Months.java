@@ -1,27 +1,31 @@
 package com.example.mat.financialmanager.enums;
 
+import java.util.ArrayList;
+
 /**
  * Created by mat on 21.05.16..
  */
 public enum Months{
-    JAN(1),
-    FEB(2),
-    MAR(3),
-    APR(4),
-    MAY(5),
-    JUN(6),
-    JUL(7),
-    AUG(8),
-    SEP(9),
-    OCT(10),
-    NOV(11),
-    DEC(12),
+    JAN(1, "Jan"),
+    FEB(2, "Feb"),
+    MAR(3, "Mar"),
+    APR(4, "Apr"),
+    MAY(5, "May"),
+    JUN(6, "Jun"),
+    JUL(7, "Jul"),
+    AUG(8, "Aug"),
+    SEP(9, "Sep"),
+    OCT(10, "Oct"),
+    NOV(11, "Nov"),
+    DEC(12, "Dec"),
     ;
 
     private final int month;
+    private final String text;
 
-    private Months(final int month) {
+    private Months(final int month, final String text) {
         this.month = month;
+        this.text = text;
     }
 
     public int getIntMonth(String month){
@@ -57,5 +61,17 @@ public enum Months{
     @Override
     public String toString () {
         return Integer.toString(month);
+    }
+
+    public static ArrayList<String> getNames(){
+        Months[] months = values();
+
+        ArrayList<String> monthNames = new ArrayList<String>();
+
+        for (int i = 0; i < months.length; i++) {
+            monthNames.add(months[i].text);
+        }
+
+        return monthNames;
     }
 }

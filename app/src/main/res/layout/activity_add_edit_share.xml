@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/edit_share_quantity"
+        android:text="1"
         android:layout_below="@+id/edit_share_name"
         />
 
@@ -70,13 +71,6 @@
             android:hint="@string/edit_share_per_one"
             />
 
-        <Spinner
-            android:id="@+id/spinner_share_currency_per_one"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            />
-
     </LinearLayout>
 
 
@@ -99,13 +93,29 @@
         />
 
     <Button
-        android:id="@+id/bttn_fund_date_to"
+        android:id="@+id/bttn_share_date_bought"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/text_share_date_bought"
         android:layout_below="@+id/edit_share_company"
-        android:text="@string/date_bought"
+        android:text="@string/btn_choose_date"
         android:onClick="showDatePickerDialog"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        />
+
+    <!--Save-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bttn_save_share"
+        android:text="@string/button_save"
+        android:textSize="20dp"
+        android:layout_below="@id/text_share_date_bought"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_marginTop="20dp"
         />
 
 
