@@ -110,6 +110,34 @@ public class AddEditShareActivity extends AppCompatActivity implements Validator
             bttnShareDateBought.setText(share.getStringCroDate());
         }
 
+        editShareQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    if(!editShareValue.getText().toString().isEmpty() &&
+                            !editShareQuantity.getText().toString().isEmpty()){
+                        double valueAll = Double.parseDouble(editShareValue.getText().toString());
+                        int quantity = Integer.parseInt(editShareQuantity.getText().toString());
+
+                        double perShare = valueAll / quantity;
+
+                        editShareValuePerOne.setText(Double.toString(perShare));
+                    }
+
+                    else if(!editShareValuePerOne.getText().toString().isEmpty() &&
+                            !editShareQuantity.getText().toString().isEmpty()){
+                        double perShare = Double.parseDouble(editShareValuePerOne.getText().toString());
+                        int quantity = Integer.parseInt(editShareQuantity.getText().toString());
+
+                        double valueAll = perShare * quantity;
+
+                        editShareValue.setText(Double.toString(perShare));
+                    }
+                }
+
+            }
+        });
+
         editShareValue.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             public void onFocusChange(View v, boolean hasFocus) {
