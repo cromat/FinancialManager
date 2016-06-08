@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.mat.financialmanager.activity.tax.TaxDetailsActivity"
+    tools:showIn="@layout/activity_tax_details">
+
+    <!--Name-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:id="@+id/label_tax_name"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_tax_name"
+        android:layout_toRightOf="@id/label_tax_name"
+        android:hint="Tax Name"
+        android:textAlignment="textEnd"
+        android:layout_alignParentRight="true"
+        android:gravity="end"
+        />
+
+    <!--Value-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_value"
+        android:id="@+id/label_tax_value"
+        android:layout_below="@+id/label_tax_name"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_tax_name"
+        android:layout_toRightOf="@+id/label_tax_value"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="end"
+        android:id="@+id/linear_tax_value_currency"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_tax_value"
+            android:hint="Value"
+            android:textAlignment="textEnd"
+            android:layout_alignParentRight="true"
+            android:gravity="end"
+            />
+
+        <!--Currency-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_tax_currency"
+            android:singleLine="true"
+            android:hint="USD"
+            android:layout_marginLeft="3dp" />
+
+    </LinearLayout>
+
+
+
+    <!--Company-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_tax_company"
+        android:id="@+id/label_tax_company"
+        android:layout_below="@+id/linear_tax_value_currency"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_tax_company"
+        android:layout_below="@id/linear_tax_value_currency"
+        android:layout_toRightOf="@+id/label_tax_company"
+        android:hint="Company"
+        android:textAlignment="textEnd"
+        android:layout_alignParentRight="true"
+        android:gravity="end"
+        />
+
+    <!--Date issue-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_tax_date_issue"
+        android:id="@+id/label_tax_date_issue"
+        android:layout_below="@id/label_tax_company"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_tax_date_issue"
+        android:layout_below="@id/label_tax_company"
+        android:layout_toRightOf="@+id/label_tax_date_issue"
+        android:hint="Date Issue"
+        android:textAlignment="textEnd"
+        android:layout_alignParentRight="true"
+        android:gravity="end"
+        />
+
+    <!--Date due-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_tax_date_due"
+        android:id="@+id/label_tax_date_due"
+        android:layout_below="@id/label_tax_date_issue"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_tax_date_due"
+        android:layout_below="@id/label_tax_date_issue"
+        android:layout_toRightOf="@+id/label_tax_date_due"
+        android:hint="Date Due"
+        android:textAlignment="textEnd"
+        android:layout_alignParentRight="true"
+        android:gravity="end"
+        />
+
+    <!--Invoice number-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_tax_invoice_number"
+        android:id="@+id/label_tax_invoice_number"
+        android:layout_below="@id/text_tax_date_due"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_tax_invoice_number"
+        android:layout_below="@id/text_tax_date_due"
+        android:layout_toRightOf="@+id/label_tax_invoice_number"
+        android:hint="Invoice Number"
+        android:textAlignment="textEnd"
+        android:layout_alignParentRight="true"
+        android:gravity="end"
+        />
+
+</RelativeLayout>

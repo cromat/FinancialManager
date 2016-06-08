@@ -15,6 +15,7 @@ import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
 import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
 import com.example.mat.financialmanager.enums.FundTypes;
+import com.example.mat.financialmanager.model.Fund;
 import com.example.mat.financialmanager.model.PensionFund;
 import com.example.mat.financialmanager.model.Share;
 import com.example.mat.financialmanager.model.TermSaving;
@@ -49,6 +50,9 @@ public class ShareDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViews();
+
+        Intent i = getIntent();
+        share = (Share) i.getSerializableExtra("share");
 
         textShareName.setText(share.getName());
         textShareValue.setText(Double.toString(share.getValue()));

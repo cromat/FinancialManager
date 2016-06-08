@@ -53,25 +53,15 @@
 
     </LinearLayout>
 
-    <LinearLayout
+
+    <EditText
+        android:id="@+id/edit_share_value_per_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linear_share_value_per_one"
-        android:weightSum="5"
+        android:inputType="numberDecimal"
+        android:hint="@string/edit_share_per_one"
         android:layout_below="@id/linear_share_value"
-        android:orientation="horizontal"
-        >
-
-        <EditText
-            android:id="@+id/edit_share_value_per_one"
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:hint="@string/edit_share_per_one"
-            />
-
-    </LinearLayout>
+        />
 
 
     <EditText
@@ -79,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/edit_share_company"
-        android:layout_below="@+id/linear_share_value_per_one"
+        android:layout_below="@+id/edit_share_value_per_one"
         />
 
     <TextView

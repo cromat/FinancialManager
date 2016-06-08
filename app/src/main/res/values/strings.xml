@@ -120,5 +120,20 @@
     <string name="no_funds">There are no funds to show</string>
     <string name="no_shares">There are no shares to show</string>
     <string name="action_add_share">Add Share</string>
+    <string name="title_activity_tax_details">TaxDetailsActivity</string>
+    <string name="edit_tax_name">Tax</string>
+    <string name="edit_tax_value">Tax Value</string>
+    <string name="edit_tax_company">Tax provider / Company</string>
+    <string name="text_tax_date_issue">Date of issue:</string>
+    <string name="text_tax_date_due">Date due:</string>
+    <string name="edit_tax_invoice_number">Tax Invoice Number:</string>
+    <string name="label_tax_company">Tax  provider / Company:</string>
+    <string name="label_tax_date_issue">Date of issue:</string>
+    <string name="label_tax_date_due">Date due:</string>
+    <string name="label_tax_invoice_number">Tax. Inv. Number:</string>
+    <string name="edit_tax">Edit Tax</string>
+    <string name="title_activity_tax_list">TaxListActivity</string>
+    <string name="no_taxes">There are no taxes to show</string>
+    <string name="action_add_tax">Add Tax</string>
 
 </resources>

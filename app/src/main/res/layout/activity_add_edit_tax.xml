@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.mat.financialmanager.activity.tax.AddEditTaxActivity">
+
+    <!--Name-->
+    <EditText
+        android:id="@+id/edit_tax_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_tax_name"
+        />
+
+
+    <!--Value-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_tax_value"
+        android:weightSum="5"
+        android:layout_below="@id/edit_tax_name"
+        android:orientation="horizontal"
+        >
+
+
+        <EditText
+            android:id="@+id/edit_tax_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_tax_value"
+            android:inputType="numberDecimal"
+            android:layout_weight="3"
+            />
+
+        <!--Currency-->
+        <Spinner
+            android:id="@+id/spinner_tax_currency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            />
+
+    </LinearLayout>
+
+
+    <!--Company-->
+    <EditText
+        android:id="@+id/edit_tax_company"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear_tax_value"
+        android:hint="@string/edit_tax_company"
+        />
+
+
+    <!--Date of issue-->
+    <TextView
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_tax_date_issue"
+        android:layout_below="@+id/edit_tax_company"
+        android:text="@string/text_tax_date_issue"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        />
+
+    <Button
+        android:id="@+id/bttn_tax_date_issue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_toRightOf="@+id/text_tax_date_issue"
+        android:layout_below="@+id/edit_tax_company"
+        android:text="@string/btn_choose_date"
+        android:onClick="showDatePickerDialog"
+        />
+
+    <!--Date due-->
+    <TextView
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_tax_date_due"
+        android:layout_below="@+id/text_tax_date_issue"
+        android:text="@string/text_tax_date_due"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        />
+
+    <Button
+        android:id="@+id/bttn_tax_date_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_toRightOf="@+id/text_tax_date_due"
+        android:layout_below="@+id/bttn_tax_date_issue"
+        android:text="@string/btn_choose_date"
+        android:onClick="showDatePickerDialog"
+
+        />
+
+    <!--Invoice number-->
+    <EditText
+        android:id="@+id/edit_tax_invoice_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_tax_invoice_number"
+        android:inputType="numberDecimal"
+        android:layout_weight="3"
+        android:layout_below="@+id/text_tax_date_due"
+        android:layout_marginTop="20dp"
+        />
+
+    <!--Save-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bttn_save_tax"
+        android:text="@string/button_save"
+        android:textSize="20dp"
+        android:layout_below="@id/edit_tax_invoice_number"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_marginTop="20dp"
+        />
+
+
+
+</RelativeLayout>
