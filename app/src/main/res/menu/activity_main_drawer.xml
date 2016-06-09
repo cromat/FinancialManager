@@ -23,6 +23,10 @@
             android:id="@+id/nav_pension_funds"
             android:icon="@drawable/nav_pension"
             android:title="Pension Funds" />
+        <item
+            android:id="@+id/nav_taxes"
+            android:icon="@drawable/nav_taxes"
+            android:title="Taxes" />
 
     </group>
 
@@ -40,6 +44,10 @@
                 android:id="@+id/nav_add_fund"
                 android:icon="@drawable/nav_plus"
                 android:title="Fund" />
+            <item
+                android:id="@+id/nav_add_tax"
+                android:icon="@drawable/nav_plus"
+                android:title="Tax" />
         </menu>
     </item>
 

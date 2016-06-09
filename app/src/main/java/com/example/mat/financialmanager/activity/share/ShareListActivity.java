@@ -152,47 +152,14 @@ public class ShareListActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_invoices) {
-            if(!this.getClass().equals(MainActivity.class)) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-            else
-                dataSetChanged();
-        }
+        Intent intent = AppConfig.getStartingActivity(id, getApplicationContext());
+        String name = (String) intent.getSerializableExtra("name");
 
-        else if (id == R.id.nav_add_invoices) {
-            if(!this.getClass().equals(AddEditInvoiceActivity.class))
-                startActivity(new Intent(getApplicationContext(),AddEditInvoiceActivity.class));
-        }
 
-        else if (id == R.id.nav_add_fund) {
-            if(!this.getClass().equals(AddEditFundActivity.class))
-                startActivity(new Intent(getApplicationContext(),AddEditFundActivity.class));
-        }
-
-        else if (id == R.id.nav_shares) {
-            if(!this.getClass().equals(ShareListActivity.class))
-                startActivity(new Intent(getApplicationContext(),ShareListActivity.class));
-        }
-
-        else if (id == R.id.nav_mutual_funds) {
-            Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
-            intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.MUTUAL_FUND.toString());
+        if(name.equals(this.getClass().getName()))
+            dataSetChanged();
+        else
             startActivity(intent);
-
-        }
-
-        else if (id == R.id.nav_pension_funds) {
-            Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
-            intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.PENSION_FUND.toString());
-            startActivity(intent);
-        }
-
-        else if (id == R.id.nav_savings) {
-            Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
-            intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.TERM_SAVING.toString());
-            startActivity(intent);
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

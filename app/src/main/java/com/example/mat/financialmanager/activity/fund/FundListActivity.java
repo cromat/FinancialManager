@@ -165,54 +165,17 @@ public class FundListActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_invoices) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        }
 
-        else if (id == R.id.nav_add_invoices) {
-            if(!this.getClass().equals(AddEditInvoiceActivity.class))
-                startActivity(new Intent(getApplicationContext(),AddEditInvoiceActivity.class));
-        }
+        Intent intent = AppConfig.getStartingActivity(id, getApplicationContext());
+        String name = (String) intent.getSerializableExtra("name");
 
-        else if (id == R.id.nav_add_fund) {
-            if(!this.getClass().equals(AddEditFundActivity.class))
-                startActivity(new Intent(getApplicationContext(),AddEditFundActivity.class));
-        }
-
-        else if (id == R.id.nav_shares) {
-            if(!this.getClass().equals(ShareListActivity.class))
-                startActivity(new Intent(getApplicationContext(),ShareListActivity.class));
-        }
-
-        else if (id == R.id.nav_mutual_funds) {
-            if(!fundType.equals(FundTypes.MUTUAL_FUND.toString())){
-                Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
-                intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.MUTUAL_FUND.toString());
-                startActivity(intent);
-            }
-            else
+        if(name.equals(FundListActivity.class.getName())) {
+            String ft = (String) intent.getSerializableExtra("name");
+            if (ft.equals(fundType))
                 dataSetChanged();
         }
-
-        else if (id == R.id.nav_pension_funds) {
-            if(!fundType.equals(FundTypes.PENSION_FUND.toString())){
-                Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
-                intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.PENSION_FUND.toString());
-                startActivity(intent);
-            }
-            else
-                dataSetChanged();
-        }
-
-        else if (id == R.id.nav_savings) {
-            if(!fundType.equals(FundTypes.PENSION_FUND)){
-                Intent intent = new Intent(getApplicationContext(), FundListActivity.class);
-                intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.TERM_SAVING.toString());
-                startActivity(intent);
-            }
-            else
-                dataSetChanged();
-        }
+        else
+            startActivity(intent);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
