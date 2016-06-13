@@ -89,27 +89,36 @@
         android:onClick="showDatePickerDialog"
         />
 
-    <!--Monthly tax-->
-    <EditText
-        android:id="@+id/edit_fund_monthly_tax"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/edit_fund_monthly_tax"
-        android:inputType="numberDecimal"
-        android:layout_weight="3"
-        android:layout_below="@+id/text_fund_date_to"
-        android:visibility="gone"
-        />
-
-    <!--Term saving-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/linear_term_saving"
+        android:id="@+id/linear_dynamic_fund"
         android:layout_below="@+id/text_fund_date_to"
-        android:visibility="gone"
+        android:layout_marginTop="20dp"
         >
+
+        <TextView
+            android:id="@+id/value_given_curr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/value_given_curr"
+            android:textSize="15dp"
+            android:textAlignment="center"
+            android:visibility="gone"
+            />
+
+        <!--Monthly tax-->
+        <EditText
+            android:id="@+id/edit_fund_monthly_tax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_fund_monthly_tax"
+            android:inputType="numberDecimal"
+            android:visibility="gone"
+            />
+
+        <!--Term saving-->
 
         <EditText
             android:id="@+id/edit_fund_interest"
@@ -118,6 +127,7 @@
             android:hint="@string/edit_fund_interest"
             android:inputType="numberDecimal"
             android:layout_weight="3"
+            android:visibility="gone"
             />
 
         <EditText
@@ -127,6 +137,8 @@
             android:hint="@string/edit_fund_value_after"
             android:inputType="numberDecimal"
             android:layout_weight="3"
+            android:visibility="gone"
+
             />
 
     </LinearLayout>
@@ -138,7 +150,7 @@
         android:id="@+id/bttn_save_fund"
         android:text="@string/button_save"
         android:textSize="20dp"
-        android:layout_below="@id/linear_term_saving"
+        android:layout_below="@id/linear_dynamic_fund"
         android:layout_centerHorizontal="true"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"

@@ -1,9 +1,14 @@
 package com.example.mat.financialmanager;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
+import com.example.mat.financialmanager.activity.LoginActivity;
 import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
 import com.example.mat.financialmanager.activity.fund.FundListActivity;
 import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
@@ -14,6 +19,10 @@ import com.example.mat.financialmanager.activity.tax.AddEditTaxActivity;
 import com.example.mat.financialmanager.activity.tax.TaxListActivity;
 import com.example.mat.financialmanager.enums.FundTypes;
 import com.example.mat.financialmanager.model.TermSaving;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by mat on 28.05.16..
@@ -33,12 +42,14 @@ public class AppConfig {
         if (id == R.id.nav_invoices) {
             Intent intent = new Intent(context, MainActivity.class);
             intent.putExtra("name", MainActivity.class.getName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             return intent;
         }
 
         else if (id == R.id.nav_shares) {
             Intent intent = new Intent(context, ShareListActivity.class);
             intent.putExtra("name", ShareListActivity.class.getName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             return intent;
         }
 
@@ -46,6 +57,7 @@ public class AppConfig {
             Intent intent = new Intent(context, FundListActivity.class);
             intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.MUTUAL_FUND.toString());
             intent.putExtra("name", FundListActivity.class.getName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             return intent;
         }
 
@@ -53,6 +65,7 @@ public class AppConfig {
             Intent intent = new Intent(context, FundListActivity.class);
             intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.PENSION_FUND.toString());
             intent.putExtra("name", FundListActivity.class.getName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             return intent;
         }
 
@@ -60,12 +73,14 @@ public class AppConfig {
             Intent intent = new Intent(context, FundListActivity.class);
             intent.putExtra(AppConfig.FUND_TYPE.toString(), FundTypes.TERM_SAVING.toString());
             intent.putExtra("name", FundListActivity.class.getName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             return intent;
         }
 
         else if (id == R.id.nav_taxes) {
             Intent intent = new Intent(context, TaxListActivity.class);
             intent.putExtra("name", TaxListActivity.class.getName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             return intent;
         }
 
@@ -82,21 +97,34 @@ public class AppConfig {
             return intent;
         }
 
-        else if (id == R.id.action_add_share) {
+        else if (id == R.id.nav_add_share) {
             Intent intent = new Intent(context, AddEditShareActivity.class);
             intent.putExtra("name", AddEditShareActivity.class.getName());
             return intent;
         }
 
-        else if (id == R.id.action_add_tax) {
+        else if (id == R.id.nav_add_tax) {
             Intent intent = new Intent(context, AddEditTaxActivity.class);
             intent.putExtra("name", AddEditTaxActivity.class.getName());
+            return intent;
+        }
+
+        else if (id == R.id.nav_logout) {
+            Intent intent = new Intent(context, LoginActivity.class);
+            intent.putExtra("name", LoginActivity.class.getName());
+            intent.putExtra("finish", true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
             return intent;
         }
 
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra("name", MainActivity.class.getName());
         return intent;
-
     }
+
+    public static boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
 }

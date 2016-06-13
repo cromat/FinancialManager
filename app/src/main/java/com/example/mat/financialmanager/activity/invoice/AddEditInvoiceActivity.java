@@ -52,7 +52,6 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
     @NotEmpty
     private EditText editBank;
     @NotEmpty
-    @Length(max = 16, min = 16)
     @CreditCard
     private EditText editCardNumber;
     private Spinner spinnerExpiryMonth;
@@ -167,7 +166,7 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
                         spinnerCardType.setSelection(adapterCardTypes.getPosition(CardTypes.MASTER_CARD.toString()));
                     else if (s.toString().substring(0,2) == "37")
                         spinnerCardType.setSelection(adapterCardTypes.getPosition(CardTypes.AMERICAN_EXPRESS.toString()));
-                    else if (s.toString().substring(0,2) == "65")
+                    else if ((s.toString().substring(0,2) == "65")||(s.toString().substring(0,2) == "60"))
                         spinnerCardType.setSelection(adapterCardTypes.getPosition(CardTypes.DISCOVER.toString()));
                     else if (s.toString().substring(0,2) == "67")
                         spinnerCardType.setSelection(adapterCardTypes.getPosition(CardTypes.MAESTRO.toString()));
@@ -217,12 +216,11 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
                     invoiceObj.put("balance", editBalance.getText().toString());
                     invoiceObj.put("currency", spinnerCurrency.getSelectedItem().toString());
 
-                    // TODO: Check for network. If not available save to sql base and add to
-                    // updating queue or generate id than save it locally
+                    if (AppConfig.isNetworkAvailable(getApplicationContext()))
+                        invoiceObj.saveInBackground();
+                    else
+                        invoiceObj.pinInBackground();
 
-                    // Invoice invoice = new Invoice()
-
-                    invoiceObj.saveInBackground();
                     finish();
                 }
             }

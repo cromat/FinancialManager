@@ -22,7 +22,7 @@
     <string name="edit_invoice_bank">Bank</string>
     <string name="edit_invoice">Edit Invoice</string>
     <string name="name">Name: </string>
-    <string name="label_invoice_number">Invoice Number: </string>
+    <string name="label_invoice_number">Invoice: </string>
     <string name="label_bank">Bank:</string>
     <string name="label_card_type">Card Type:</string>
     <string name="title_activity_settings">Settings</string>
@@ -151,5 +151,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="value_given_curr">The value is in currency choosen above.</string>
 
 </resources>

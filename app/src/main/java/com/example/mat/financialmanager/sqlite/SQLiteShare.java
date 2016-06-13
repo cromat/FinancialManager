@@ -19,7 +19,7 @@ public class SQLiteShare extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database name
-    private static final String DATABASE_NAME = "finmgr";
+    private static final String DATABASE_NAME = "finmgr_shares";
 
     // Ime tablice oglasa
     private static final String TABLE_SHARES = "Shares";

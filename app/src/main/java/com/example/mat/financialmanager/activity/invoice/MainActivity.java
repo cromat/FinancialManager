@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.SettingsActivity;
+import com.example.mat.financialmanager.activity.LoginActivity;
 import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
 import com.example.mat.financialmanager.activity.fund.FundListActivity;
 import com.example.mat.financialmanager.activity.share.ShareListActivity;
@@ -33,6 +34,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         db = new SQLiteInvoice(getApplicationContext());
+        db.getWritableDatabase();
+
         invoices = new ArrayList<>();
 
         recyclerInvoices = (RecyclerView)findViewById(R.id.recycler_main);
@@ -143,6 +147,11 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.action_add_invoice) {
             startActivity(new Intent(getApplicationContext(), AddEditInvoiceActivity.class));
         }
+        else if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            finish();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -156,9 +165,19 @@ public class MainActivity extends AppCompatActivity
         Intent intent = AppConfig.getStartingActivity(id, getApplicationContext());
         String name = (String) intent.getSerializableExtra("name");
 
+        if(name.equals(LoginActivity.class.getName())) {
+            ParseUser.logOut();
+            startActivity(intent);
+        }
 
         if(name.equals(this.getClass().getName()))
             dataSetChanged();
+
+        else if(name.equals(LoginActivity.class.getName())){
+            finish();
+            startActivity(intent);
+        }
+
         else
             startActivity(intent);
 
@@ -170,7 +189,7 @@ public class MainActivity extends AppCompatActivity
     public void parseFetchInvoices(){
         searching = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Invoices");
-        query.findInBackground(new FindCallback<ParseObject>() {
+        query.whereEqualTo("user_id", ParseUser.getCurrentUser().getObjectId()).findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> invoicesParse, ParseException e) {
                 if (e == null) {
 

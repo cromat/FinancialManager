@@ -22,7 +22,7 @@ public class SQLiteFund extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database name
-    private static final String DATABASE_NAME = "finmgr";
+    private static final String DATABASE_NAME = "finmgr_funds";
 
     // Ime tablice oglasa
     private static final String TABLE_FUNDS = "Funds";

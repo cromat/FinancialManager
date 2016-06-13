@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.SettingsActivity;
+import com.example.mat.financialmanager.activity.LoginActivity;
 import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
 import com.example.mat.financialmanager.activity.fund.FundListActivity;
 import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
@@ -34,6 +35,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,8 @@ public class TaxListActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         db = new SQLiteTax(getApplicationContext());
+        db.getWritableDatabase();
+
         taxes = new ArrayList<>();
 
         recyclerTaxes = (RecyclerView)findViewById(R.id.recycler_tax);
@@ -142,6 +146,10 @@ public class TaxListActivity extends AppCompatActivity
         else if (id == R.id.action_add_tax) {
             startActivity(new Intent(getApplicationContext(), AddEditTaxActivity.class));
         }
+        else if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -169,7 +177,7 @@ public class TaxListActivity extends AppCompatActivity
     public void parseFetchTaxes(){
         searching = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Taxes");
-        query.findInBackground(new FindCallback<ParseObject>() {
+        query.whereEqualTo("user_id", ParseUser.getCurrentUser().getObjectId()).findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> taxesParse, ParseException e) {
                 if (e == null) {
 

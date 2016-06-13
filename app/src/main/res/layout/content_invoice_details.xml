@@ -49,6 +49,7 @@
         android:layout_toRightOf="@+id/label_invoice_number"
         android:hint="Invoice Number"
         android:textAlignment="textEnd"
+        android:singleLine="true"
         android:layout_alignParentRight="true"
         android:gravity="end"
         />

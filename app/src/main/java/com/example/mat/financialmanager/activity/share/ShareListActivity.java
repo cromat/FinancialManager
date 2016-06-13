@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.SettingsActivity;
+import com.example.mat.financialmanager.activity.LoginActivity;
 import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
 import com.example.mat.financialmanager.activity.fund.FundListActivity;
 import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
@@ -33,6 +34,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,8 @@ public class ShareListActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         db = new SQLiteShare(getApplicationContext());
+        db.getWritableDatabase();
+
         shares = new ArrayList<>();
 
         recyclerShares= (RecyclerView)findViewById(R.id.recycler_share);
@@ -142,6 +146,10 @@ public class ShareListActivity extends AppCompatActivity
         else if (id == R.id.action_add_share) {
             startActivity(new Intent(getApplicationContext(), AddEditShareActivity.class));
         }
+        else if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -155,6 +163,10 @@ public class ShareListActivity extends AppCompatActivity
         Intent intent = AppConfig.getStartingActivity(id, getApplicationContext());
         String name = (String) intent.getSerializableExtra("name");
 
+        if(name.equals(LoginActivity.class.getName())) {
+            ParseUser.logOut();
+            startActivity(intent);
+        }
 
         if(name.equals(this.getClass().getName()))
             dataSetChanged();
@@ -169,7 +181,7 @@ public class ShareListActivity extends AppCompatActivity
     public void parseFetchShares(){
         searching = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Shares");
-        query.findInBackground(new FindCallback<ParseObject>() {
+        query.whereEqualTo("user_id", ParseUser.getCurrentUser().getObjectId()).findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> sharesParse, ParseException e) {
                 if (e == null) {
 

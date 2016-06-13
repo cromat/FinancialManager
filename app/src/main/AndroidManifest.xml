@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" android:protectionLevel="signature"/>
+
 
     <application
         android:allowBackup="true"
@@ -20,12 +22,10 @@
             android:name=".activity.invoice.MainActivity"
             android:label="@string/title_activity_main"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:theme="@style/AppTheme.NoActionBar"
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            >
+
         </activity>
         <activity
             android:name=".activity.invoice.AddEditInvoiceActivity"
@@ -76,8 +76,18 @@
             android:label="@string/title_activity_tax_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:name=".activity.LoginActivity"
+            android:noHistory="true"
+            android:label="@string/title_activity_login"
+            android:launchMode="singleInstance">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

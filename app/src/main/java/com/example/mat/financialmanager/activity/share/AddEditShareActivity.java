@@ -1,11 +1,13 @@
 package com.example.mat.financialmanager.activity.share;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
+import com.example.mat.financialmanager.activity.tax.AddEditTaxActivity;
 import com.example.mat.financialmanager.enums.CardTypes;
 import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Share;
@@ -25,7 +28,12 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AddEditShareActivity extends AppCompatActivity implements Validator.ValidationListener{
 
@@ -47,6 +55,7 @@ public class AddEditShareActivity extends AppCompatActivity implements Validator
     private boolean validated;
     private Share share;
     private ArrayAdapter<String> adapterShareCurrencies;
+    private Calendar myCalendar;
 
 
 
@@ -109,6 +118,32 @@ public class AddEditShareActivity extends AppCompatActivity implements Validator
             editShareCompany.setText(share.getCompany());
             bttnShareDateBought.setText(share.getStringCroDate());
         }
+
+        bttnShareDateBought.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myCalendar = Calendar.getInstance();
+
+                DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
+                        myCalendar.set(Calendar.YEAR, year);
+                        myCalendar.set(Calendar.MONTH, monthOfYear);
+                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        String myFormat = "dd.MM.yyyy";
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
+
+                        bttnShareDateBought.setText(sdf.format(myCalendar.getTime()));
+                    }
+                };
+
+                new DatePickerDialog(AddEditShareActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         editShareQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -197,20 +232,29 @@ public class AddEditShareActivity extends AppCompatActivity implements Validator
                         e.printStackTrace();
                     }
 
+                    Date dateBought = new Date();
+
+                    DateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.UK);
+                    try {
+                        dateBought = format.parse(bttnShareDateBought.getText().toString());
+                    } catch (java.text.ParseException e) {
+                        e.printStackTrace();
+                    }
 
                     shareObj.put("user_id", ParseUser.getCurrentUser().getObjectId());
                     shareObj.put("name", editShareName.getText().toString());
                     shareObj.put("value", editShareValue.getText().toString());
                     shareObj.put("value_per_share", editShareValuePerOne.getText().toString());
-                    shareObj.put("date_bought", bttnShareDateBought.getText());
+                    shareObj.put("date_bought", dateBought.toString());
                     shareObj.put("currency", spinnerShareCurrency.getSelectedItem().toString());
                     shareObj.put("company", editShareCompany.getText().toString());
                     shareObj.put("quantity", editShareQuantity.getText().toString());
 
-                    // TODO: Check for network. If not available save to sql base and add to
-                    // updating queue or generate id than save it locally
+                    if (AppConfig.isNetworkAvailable(getApplicationContext()))
+                        shareObj.saveInBackground();
+                    else
+                    shareObj.pinInBackground();
 
-                    shareObj.saveInBackground();
                     finish();
                 }
             }
