@@ -18,7 +18,7 @@ import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.activity.invoice.InvoiceDetailsActivity;
 import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Invoice;
-import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 
 import java.util.List;
 
@@ -64,8 +64,13 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
 
         if (useDefaultCurrency){
             String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
-            SQLiteCurrencies dbCurr = new SQLiteCurrencies(ivh.context);
-            double balanceRecalc = dbCurr.getFromTo(invoices.get(i).getCurrency(), defaultCurr, invoices.get(i).getBalance());
+            SQLiteHelper dbCurr = new SQLiteHelper(ivh.context);
+            try {
+                dbCurr.getWritableDatabase();
+            }
+            catch (IllegalStateException e){
+                e.printStackTrace();
+            }            double balanceRecalc = dbCurr.getFromTo(invoices.get(i).getCurrency(), defaultCurr, invoices.get(i).getBalance());
 
             ivh.balance.setText(Double.toString(balanceRecalc));
             ivh.currency.setText(defaultCurr);

@@ -18,9 +18,8 @@ import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.activity.fund.FundDetailsActivity;
 import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Fund;
-import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,7 +63,13 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
 
         if (useDefaultCurrency){
             String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
-            SQLiteCurrencies dbCurr = new SQLiteCurrencies(ivh.context);
+            SQLiteHelper dbCurr = new SQLiteHelper(ivh.context);
+            try {
+                dbCurr.getWritableDatabase();
+            }
+            catch (IllegalStateException e){
+                e.printStackTrace();
+            }
             double balanceRecalc = dbCurr.getFromTo(funds.get(i).getCurrency(), defaultCurr, funds.get(i).getValue());
 
             ivh.value.setText(Double.toString(balanceRecalc));

@@ -10,13 +10,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
-import com.example.mat.financialmanager.activity.tax.AddEditTaxActivity;
-import com.example.mat.financialmanager.enums.CardTypes;
 import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Share;
 import com.mobsandgeeks.saripaar.ValidationError;

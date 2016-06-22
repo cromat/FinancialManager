@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.enums.Currencies;
-import com.example.mat.financialmanager.model.Share;
 import com.example.mat.financialmanager.model.Tax;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;

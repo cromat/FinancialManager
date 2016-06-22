@@ -21,14 +21,9 @@ import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.SettingsActivity;
 import com.example.mat.financialmanager.activity.LoginActivity;
-import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
-import com.example.mat.financialmanager.activity.fund.FundListActivity;
-import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
-import com.example.mat.financialmanager.activity.invoice.MainActivity;
 import com.example.mat.financialmanager.adapter.ShareAdapter;
-import com.example.mat.financialmanager.enums.FundTypes;
 import com.example.mat.financialmanager.model.Share;
-import com.example.mat.financialmanager.sqlite.SQLiteShare;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -48,7 +43,7 @@ public class ShareListActivity extends AppCompatActivity
     private RecyclerView.Adapter adapterShares;
     public List<Share> shares;
     private boolean searching = false;
-    private SQLiteShare db;
+    private SQLiteHelper db;
 
 
     @Override
@@ -58,7 +53,7 @@ public class ShareListActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        db = new SQLiteShare(getApplicationContext());
+        db = new SQLiteHelper(getApplicationContext());
         db.getWritableDatabase();
 
         shares = new ArrayList<>();

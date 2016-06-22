@@ -14,12 +14,10 @@ import android.widget.TextView;
 import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.DecimalDigitsInputFilter;
 import com.example.mat.financialmanager.R;
-import com.example.mat.financialmanager.activity.fund.FundDetailsActivity;
 import com.example.mat.financialmanager.activity.share.ShareDetailsActivity;
 import com.example.mat.financialmanager.enums.Currencies;
-import com.example.mat.financialmanager.model.Fund;
 import com.example.mat.financialmanager.model.Share;
-import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 
 import java.util.List;
 
@@ -66,7 +64,13 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
 
         if (useDefaultCurrency){
             String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
-            SQLiteCurrencies dbCurr = new SQLiteCurrencies(ivh.context);
+            SQLiteHelper dbCurr = new SQLiteHelper(ivh.context);
+            try {
+                dbCurr.getWritableDatabase();
+            }
+            catch (IllegalStateException e){
+                e.printStackTrace();
+            }
             double balanceRecalc = dbCurr.getFromTo(shares.get(i).getCurrency(), defaultCurr, shares.get(i).getValue());
 
             ivh.value.setText(Double.toString(balanceRecalc));

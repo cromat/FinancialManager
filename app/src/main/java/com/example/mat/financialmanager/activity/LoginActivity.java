@@ -75,6 +75,8 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
     private DialogInterface.OnClickListener dialogClickListener;
     private AlertDialog.Builder builder;
 
+    ParseUser dialogUser;
+
 
     private void findViews() {
         email = (AutoCompleteTextView)findViewById( R.id.email );
@@ -115,11 +117,11 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
-                        ParseUser user = new ParseUser();
-                        user.setUsername(usernametxt);
-                        user.setPassword(passwordtxt);
+                        dialogUser = new ParseUser();
+                        dialogUser.setUsername(usernametxt);
+                        dialogUser.setPassword(passwordtxt);
 
-                        user.signUpInBackground(new SignUpCallback() {
+                        dialogUser.signUpInBackground(new SignUpCallback() {
                             public void done(ParseException e) {
                                 if (e == null) {
                                     // Show a simple Toast message upon successful registration
@@ -128,9 +130,14 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
                                             Toast.LENGTH_LONG).show();
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(),
-                                            "Sign up Error", Toast.LENGTH_LONG)
-                                            .show();
+                                    if (dialogUser != null)
+                                        Toast.makeText(getApplicationContext(),
+                                                "User already exists!", Toast.LENGTH_LONG)
+                                                .show();
+                                    else
+                                        Toast.makeText(getApplicationContext(),
+                                                "Sign up Error", Toast.LENGTH_LONG)
+                                                .show();
                                 }
                             }
                         });
@@ -145,7 +152,7 @@ public class LoginActivity extends Activity implements Validator.ValidationListe
         };
 
         builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
-        builder.setMessage("Do you want to register with these credentials?").setPositiveButton("Yes", dialogClickListener)
+        builder.setMessage("Do you want to register with email " + email.getText().toString() + " and given password?").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener);
 
 

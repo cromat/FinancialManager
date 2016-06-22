@@ -2,8 +2,6 @@ package com.example.mat.financialmanager.activity.invoice;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -19,15 +17,12 @@ import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.enums.CardTypes;
 import com.example.mat.financialmanager.enums.Currencies;
-import com.example.mat.financialmanager.enums.FundTypes;
 import com.example.mat.financialmanager.enums.Months;
 import com.example.mat.financialmanager.model.Invoice;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.CreditCard;
-import com.mobsandgeeks.saripaar.annotation.Digits;
 import com.mobsandgeeks.saripaar.annotation.Length;
-import com.mobsandgeeks.saripaar.annotation.Min;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -35,13 +30,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.apache.commons.validator.routines.IBANValidator;
 import org.apache.commons.validator.routines.checkdigit.IBANCheckDigit;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class AddEditInvoiceActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -147,15 +139,6 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
         }
 
         editCardNumber.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -174,14 +157,20 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
                         spinnerCardType.setSelection(adapterCardTypes.getPosition(CardTypes.OTHER.toString()));
                 }
             }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
         });
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                editInvoiceNumber.setText("HR8541330064321432143");
-
                 if (!isInvoiceNumValid(editInvoiceNumber.getText().toString())){
                     String message = "Wrong IBAN number!";
                     editInvoiceNumber.setError(message);

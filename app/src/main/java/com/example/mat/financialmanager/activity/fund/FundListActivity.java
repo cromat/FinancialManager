@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.UiThread;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,15 +21,12 @@ import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.SettingsActivity;
 import com.example.mat.financialmanager.activity.LoginActivity;
-import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
-import com.example.mat.financialmanager.activity.invoice.MainActivity;
-import com.example.mat.financialmanager.activity.share.ShareListActivity;
 import com.example.mat.financialmanager.adapter.FundAdapter;
 import com.example.mat.financialmanager.enums.FundTypes;
 import com.example.mat.financialmanager.model.Fund;
 import com.example.mat.financialmanager.model.PensionFund;
 import com.example.mat.financialmanager.model.TermSaving;
-import com.example.mat.financialmanager.sqlite.SQLiteFund;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -50,7 +46,7 @@ public class FundListActivity extends AppCompatActivity
     private RecyclerView.Adapter adapterFunds;
     public List<Fund> funds;
     private boolean searching = false;
-    private SQLiteFund db;
+    private SQLiteHelper db;
 
     private String fundType;
 
@@ -70,7 +66,7 @@ public class FundListActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        db = new SQLiteFund(getApplicationContext());
+        db = new SQLiteHelper(getApplicationContext());
         db.getWritableDatabase();
 
 

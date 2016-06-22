@@ -27,8 +27,7 @@ import com.example.mat.financialmanager.activity.share.ShareListActivity;
 import com.example.mat.financialmanager.adapter.InvoiceAdapter;
 import com.example.mat.financialmanager.enums.FundTypes;
 import com.example.mat.financialmanager.model.Invoice;
-import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
-import com.example.mat.financialmanager.sqlite.SQLiteInvoice;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -36,6 +35,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView.Adapter adapterInvoices;
     public List<Invoice> invoices;
     private boolean searching = false;
-    private SQLiteInvoice db;
+    private SQLiteHelper db;
 
 
     @Override
@@ -59,9 +59,17 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        db = new SQLiteInvoice(getApplicationContext());
+
+        db = new SQLiteHelper(getApplicationContext());
         db.getWritableDatabase();
 
+        SQLiteHelper dbCurr = new SQLiteHelper(getApplicationContext());
+        try {
+            dbCurr.getWritableDatabase();
+        }
+        catch (IllegalStateException e){
+            e.printStackTrace();
+        }
         invoices = new ArrayList<>();
 
         recyclerInvoices = (RecyclerView)findViewById(R.id.recycler_main);
@@ -172,11 +180,6 @@ public class MainActivity extends AppCompatActivity
 
         if(name.equals(this.getClass().getName()))
             dataSetChanged();
-
-        else if(name.equals(LoginActivity.class.getName())){
-            finish();
-            startActivity(intent);
-        }
 
         else
             startActivity(intent);

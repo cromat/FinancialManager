@@ -15,4 +15,5 @@
         android:key="pref_check_default_currency"
         />
 
+
 </PreferenceScreen>

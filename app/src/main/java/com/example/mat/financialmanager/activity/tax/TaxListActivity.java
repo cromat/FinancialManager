@@ -21,15 +21,9 @@ import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.SettingsActivity;
 import com.example.mat.financialmanager.activity.LoginActivity;
-import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
-import com.example.mat.financialmanager.activity.fund.FundListActivity;
-import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
-import com.example.mat.financialmanager.activity.invoice.MainActivity;
-import com.example.mat.financialmanager.activity.share.ShareListActivity;
 import com.example.mat.financialmanager.adapter.TaxAdapter;
-import com.example.mat.financialmanager.enums.FundTypes;
 import com.example.mat.financialmanager.model.Tax;
-import com.example.mat.financialmanager.sqlite.SQLiteTax;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -49,7 +43,7 @@ public class TaxListActivity extends AppCompatActivity
     private RecyclerView.Adapter adapterTaxes;
     public List<Tax> taxes;
     private boolean searching = false;
-    private SQLiteTax db;
+    private SQLiteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +52,7 @@ public class TaxListActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        db = new SQLiteTax(getApplicationContext());
+        db = new SQLiteHelper(getApplicationContext());
         db.getWritableDatabase();
 
         taxes = new ArrayList<>();

@@ -3,7 +3,6 @@ package com.example.mat.financialmanager.activity.share;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,13 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.mat.financialmanager.R;
-import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
-import com.example.mat.financialmanager.activity.invoice.AddEditInvoiceActivity;
-import com.example.mat.financialmanager.enums.FundTypes;
-import com.example.mat.financialmanager.model.Fund;
-import com.example.mat.financialmanager.model.PensionFund;
 import com.example.mat.financialmanager.model.Share;
-import com.example.mat.financialmanager.model.TermSaving;
 
 public class ShareDetailsActivity extends AppCompatActivity {
 

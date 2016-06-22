@@ -19,8 +19,7 @@ import com.example.mat.financialmanager.DecimalDigitsInputFilter;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Invoice;
-import com.example.mat.financialmanager.sqlite.SQLiteCurrencies;
-import com.example.mat.financialmanager.sqlite.SQLiteInvoice;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 
 public class InvoiceDetailsActivity extends AppCompatActivity {
 
@@ -79,7 +78,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
 
         if (useDefaultCurrency){
             String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
-            SQLiteCurrencies dbCurr = new SQLiteCurrencies(getApplicationContext());
+            SQLiteHelper dbCurr = new SQLiteHelper(getApplicationContext());
             double balanceRecalc = dbCurr.getFromTo(invoice.getCurrency(), defaultCurr, invoice.getBalance());
 
             textBalance.setText(Double.toString(balanceRecalc));
