@@ -1,12 +1,5 @@
 package com.example.mat.financialmanager.model;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-
-import com.example.mat.financialmanager.R;
-import com.example.mat.financialmanager.enums.CardTypes;
-
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;

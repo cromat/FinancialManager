@@ -1,12 +1,8 @@
 package com.example.mat.financialmanager;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.widget.DatePicker;
-import android.widget.TextView;
 
 import com.example.mat.financialmanager.activity.LoginActivity;
 import com.example.mat.financialmanager.activity.fund.AddEditFundActivity;
@@ -18,11 +14,7 @@ import com.example.mat.financialmanager.activity.share.ShareListActivity;
 import com.example.mat.financialmanager.activity.tax.AddEditTaxActivity;
 import com.example.mat.financialmanager.activity.tax.TaxListActivity;
 import com.example.mat.financialmanager.enums.FundTypes;
-import com.example.mat.financialmanager.model.TermSaving;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import com.parse.Parse;
 
 /**
  * Created by mat on 28.05.16..
@@ -125,6 +117,21 @@ public class AppConfig {
     public static boolean isNetworkAvailable(final Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
+    public static void connectToParse(Context context){
+        try {
+            Parse.initialize(new Parse.Configuration.Builder(context)
+                    .applicationId(APP_ID)
+                    .server(PARSE_LINK)
+                    .enableLocalDataStore()
+                    .build()
+            );
+
+        }
+        catch (IllegalStateException e){
+            e.printStackTrace();
+        }
     }
 
 }

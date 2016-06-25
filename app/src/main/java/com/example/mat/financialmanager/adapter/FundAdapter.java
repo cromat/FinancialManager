@@ -72,12 +72,12 @@ public class FundAdapter extends RecyclerView.Adapter<FundAdapter.FundViewHolder
             }
             double balanceRecalc = dbCurr.getFromTo(funds.get(i).getCurrency(), defaultCurr, funds.get(i).getValue());
 
-            ivh.value.setText(Double.toString(balanceRecalc));
+            ivh.value.setText(String.format("%.2f",balanceRecalc));
             ivh.currency.setText(defaultCurr);
         }
 
         else {
-            ivh.value.setText(Double.toString(funds.get(i).getValue()));
+            ivh.value.setText(String.format("%.2f",funds.get(i).getValue()));
             ivh.currency.setText(funds.get(i).getCurrency());
         }
 

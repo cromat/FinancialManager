@@ -1,7 +1,9 @@
 package com.example.mat.financialmanager.activity.share;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,8 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
+import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Share;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 
 public class ShareDetailsActivity extends AppCompatActivity {
 
@@ -48,9 +53,27 @@ public class ShareDetailsActivity extends AppCompatActivity {
         share = (Share) i.getSerializableExtra("share");
 
         textShareName.setText(share.getName());
-        textShareValue.setText(Double.toString(share.getValue()));
-        textShareCurrency.setText(share.getCurrency());
-        textPerShareValue.setText(Double.toString(share.getValuePerShare()));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean useDefaultCurrency = prefs.getBoolean(AppConfig.PREF_DEFAULT_CURRENCY, false);
+
+        if (useDefaultCurrency){
+            String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
+            SQLiteHelper dbCurr = new SQLiteHelper(getApplicationContext());
+            double valueRecalc = dbCurr.getFromTo(share.getCurrency(), defaultCurr, share.getValue());
+            double valuePerShareRecalc = dbCurr.getFromTo(share.getCurrency(), defaultCurr, share.getValuePerShare());
+
+            textShareValue.setText(String.format("%.2f", valueRecalc));
+            textPerShareValue.setText(String.format("%.2f",valuePerShareRecalc));
+
+            textShareCurrency.setText(defaultCurr);
+        }
+        else {
+            textShareCurrency.setText(share.getCurrency());
+            textShareValue.setText(String.format("%.2f",share.getValue()));
+            textPerShareValue.setText(String.format("%.2f",share.getValuePerShare()));
+
+        }
+
         textShareQuantity.setText(Integer.toString(share.getQuantity()));
         textShareCompany.setText(share.getCompany());
         textShareDateBought.setText(share.getStringCroDate());

@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
 import com.example.mat.financialmanager.R;
-import com.example.mat.financialmanager.enums.CardTypes;
 import com.example.mat.financialmanager.enums.FundTypes;
 
 import java.io.Serializable;

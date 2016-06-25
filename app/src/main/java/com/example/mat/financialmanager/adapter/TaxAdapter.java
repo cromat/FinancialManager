@@ -2,6 +2,8 @@ package com.example.mat.financialmanager.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
@@ -9,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.DecimalDigitsInputFilter;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.activity.tax.TaxDetailsActivity;
+import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Tax;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 
 import java.util.List;
 
@@ -51,10 +56,30 @@ public class TaxAdapter extends RecyclerView.Adapter<TaxAdapter.TaxViewHolder> {
         ivh.company.setText(taxes.get(i).getCompany());
         ivh.dateIssue.setText(taxes.get(i).getCroDateIssue());
         ivh.dateDue.setText(taxes.get(i).getCroDateDue());
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ivh.context);
+        boolean useDefaultCurrency = prefs.getBoolean(AppConfig.PREF_DEFAULT_CURRENCY, false);
+
         ivh.value.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
-        ivh.value.setText(Double.toString(taxes.get(i).getValue()));
-        ivh.currency.setText(taxes.get(i).getCurrency());
-        ivh.invoiceNumber.setText(taxes.get(i).getInvoiceNumber());
+
+        if (useDefaultCurrency){
+            String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
+            SQLiteHelper dbCurr = new SQLiteHelper(ivh.context);
+            try {
+                dbCurr.getWritableDatabase();
+            }
+            catch (IllegalStateException e){
+                e.printStackTrace();
+            }
+            double balanceRecalc = dbCurr.getFromTo(taxes.get(i).getCurrency(), defaultCurr, taxes.get(i).getValue());
+
+            ivh.value.setText(String.format("%.2f", balanceRecalc));
+            ivh.currency.setText(defaultCurr);
+        }
+        else {
+            ivh.value.setText(String.format("%.2f", taxes.get(i).getValue()));
+            ivh.currency.setText(taxes.get(i).getCurrency());
+        }
     }
 
     public static class TaxViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -65,11 +90,11 @@ public class TaxAdapter extends RecyclerView.Adapter<TaxAdapter.TaxViewHolder> {
         private TextView dateDue;
         private TextView value;
         private TextView currency;
-        private TextView invoiceNumber;
         public Context context;
 
         public TaxViewHolder(View view) {
             super(view);
+            view.setOnClickListener(this);
             name = (TextView)view.findViewById( R.id.item_text_tax_name );
             company = (TextView)view.findViewById( R.id.item_text_tax_company );
             dateIssue = (TextView)view.findViewById( R.id.item_text_tax_date_issue );

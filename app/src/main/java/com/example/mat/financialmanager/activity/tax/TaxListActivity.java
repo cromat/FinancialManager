@@ -60,19 +60,7 @@ public class TaxListActivity extends AppCompatActivity
         recyclerTaxes = (RecyclerView)findViewById(R.id.recycler_tax);
         textNoTaxes = (TextView)findViewById(R.id.text_no_taxes);
 
-        getTaxes();
-
-        try {
-            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                    .applicationId(AppConfig.APP_ID)
-                    .server(AppConfig.PARSE_LINK)
-                    .build()
-            );
-
-        }
-        catch (IllegalStateException e){
-            e.printStackTrace();
-        }
+        AppConfig.connectToParse(getApplicationContext());
 
         recyclerTaxes.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -82,13 +70,14 @@ public class TaxListActivity extends AppCompatActivity
 
         parseFetchTaxes();
         getTaxes();
-
         dataSetChanged();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!searching)
+                    parseFetchTaxes();
                 dataSetChanged();
             }
         });
@@ -183,7 +172,6 @@ public class TaxListActivity extends AppCompatActivity
                         tax.setName(taxObject.getString("name"));
                         tax.setCompany(taxObject.getString("company"));
                         tax.setValue(Double.parseDouble(taxObject.getString("value")));
-                        tax.setDateDue(taxObject.getString("date_due"));
                         tax.setDateIssue(taxObject.getString("date_issue"));
                         tax.setCurrency(taxObject.getString("currency"));
                         tax.setInvoiceNumber(taxObject.getString("invoice_number"));
@@ -191,6 +179,7 @@ public class TaxListActivity extends AppCompatActivity
                         db.updateOrInsertTax(tax);
                         dataSetChanged();
                     }
+                    searching = false;
                 }
                 else {
                     e.printStackTrace();
@@ -201,13 +190,12 @@ public class TaxListActivity extends AppCompatActivity
 
     public void getTaxes(){
         try {
-            taxes = db.getTaxes();
+            taxes = db.getTaxes(ParseUser.getCurrentUser().getObjectId());
         }
         catch (NullPointerException e){
             e.printStackTrace();
         }
 
-        dataSetChanged();
 
         if (taxes.size() == 0){
             textNoTaxes.setVisibility(View.VISIBLE);
@@ -223,8 +211,12 @@ public class TaxListActivity extends AppCompatActivity
     @UiThread
     protected void dataSetChanged() {
         try {
+            taxes.clear();
+            getTaxes();
             adapterTaxes = new TaxAdapter(taxes);
+            recyclerTaxes.setAdapter(adapterTaxes);
             adapterTaxes.notifyItemInserted(taxes.size());
+            adapterTaxes.notifyDataSetChanged();
             recyclerTaxes.setAdapter(adapterTaxes);
         }
         catch (NullPointerException ex) {

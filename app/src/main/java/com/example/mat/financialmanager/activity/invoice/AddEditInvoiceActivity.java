@@ -24,7 +24,6 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.CreditCard;
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -73,17 +72,7 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
         validator.setValidationListener(this);
         validated = false;
 
-        try {
-            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                    .applicationId(AppConfig.APP_ID)
-                    .server(AppConfig.PARSE_LINK)
-                    .build()
-            );
-
-        }
-        catch (IllegalStateException e){
-            e.printStackTrace();
-        }
+        AppConfig.connectToParse(getApplicationContext());
 
         try{
             Intent i = getIntent();
@@ -211,6 +200,7 @@ public class AddEditInvoiceActivity extends AppCompatActivity implements Validat
                         invoiceObj.pinInBackground();
 
                     finish();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
             }
         });

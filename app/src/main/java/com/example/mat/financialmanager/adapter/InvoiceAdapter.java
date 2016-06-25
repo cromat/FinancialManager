@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mat.financialmanager.AppConfig;
-import com.example.mat.financialmanager.DecimalDigitsInputFilter;
 import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.activity.invoice.InvoiceDetailsActivity;
 import com.example.mat.financialmanager.enums.Currencies;
@@ -60,7 +58,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ivh.context);
         boolean useDefaultCurrency = prefs.getBoolean(AppConfig.PREF_DEFAULT_CURRENCY, false);
 
-        ivh.balance.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
 
         if (useDefaultCurrency){
             String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
@@ -72,11 +69,11 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
                 e.printStackTrace();
             }            double balanceRecalc = dbCurr.getFromTo(invoices.get(i).getCurrency(), defaultCurr, invoices.get(i).getBalance());
 
-            ivh.balance.setText(Double.toString(balanceRecalc));
+            ivh.balance.setText(String.format("%.2f", balanceRecalc));
             ivh.currency.setText(defaultCurr);
         }
         else {
-            ivh.balance.setText(Double.toString(invoices.get(i).getBalance()));
+            ivh.balance.setText(String.format("%.2f",invoices.get(i).getBalance()));
             ivh.currency.setText(invoices.get(i).getCurrency());
         }
         ivh.bank.setText(invoices.get(i).getBank());

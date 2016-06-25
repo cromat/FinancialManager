@@ -25,9 +25,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -250,12 +248,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT COUNT(*) FROM " + TABLE_TAXES + " WHERE " + COLUMN_TAX_ID + " = \'" +
+        String query = "SELECT * FROM " + TABLE_TAXES + " WHERE " + COLUMN_TAX_ID + " = \'" +
                 tax.getId() + "\'";
 
         Cursor mCount = db.rawQuery(query, null);
-        mCount.moveToFirst();
-        int exists = mCount.getInt(0);
+        int exists = mCount.getCount();
 
         if (exists == 0)
             addTax(tax);
@@ -271,6 +268,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_TAX_ID, tax.getId());
         values.put(COLUMN_TAX_USER_ID, tax.getUserId());
         values.put(COLUMN_TAX_NAME, tax.getName());
         values.put(COLUMN_TAX_VALUE, tax.getValue());
@@ -284,9 +282,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Tax> getTaxes() {
+    public ArrayList<Tax> getTaxes(String userId) {
         ArrayList<Tax> taxes = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_TAXES + ";";
+        String selectQuery = "SELECT  * FROM " + TABLE_TAXES + " WHERE " + COLUMN_TAX_USER_ID + "='" + userId + "';";
 
         SQLiteDatabase db = this.getReadableDatabase();
         try {
@@ -345,12 +343,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT COUNT(*) FROM " + TABLE_SHARES + " WHERE " + COLUMN_SHARE_ID + " = \'" +
+        String query = "SELECT * FROM " + TABLE_SHARES + " WHERE " + COLUMN_SHARE_ID + " = \'" +
                 share.getId() + "\'";
 
         Cursor mCount = db.rawQuery(query, null);
-        mCount.moveToFirst();
-        int exists = mCount.getInt(0);
+        int exists = mCount.getCount();
 
         if (exists == 0)
             addShare(share);
@@ -366,6 +363,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_SHARE_ID, share.getId());
         values.put(COLUMN_SHARE_USER_ID, share.getUserId());
         values.put(COLUMN_SHARE_NAME, share.getName());
         values.put(COLUMN_SHARE_QUANTITY, Integer.toString(share.getQuantity()));
@@ -379,9 +377,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Share> getShares() {
+    public ArrayList<Share> getShares(String userId) {
         ArrayList<Share> shares = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_SHARES + ";";
+        String selectQuery = "SELECT  * FROM " + TABLE_SHARES + " WHERE " + COLUMN_SHARE_USER_ID + "='" + userId + "';";
 
         SQLiteDatabase db = this.getReadableDatabase();
         try {
@@ -440,12 +438,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT COUNT(*) FROM " + TABLE_INVOICES + " WHERE " + COLUMN_INVOICE_ID + " = \'" +
+        String query = "SELECT * FROM " + TABLE_INVOICES + " WHERE " + COLUMN_INVOICE_ID + " = \'" +
                 invoice.getId() + "\'";
 
         Cursor mCount = db.rawQuery(query, null);
-        mCount.moveToFirst();
-        int exists = mCount.getInt(0);
+        int exists = mCount.getCount();
 
         if (exists == 0)
             addInvoice(invoice);
@@ -476,9 +473,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Invoice> getInvoices() {
+    public ArrayList<Invoice> getInvoices(String userId) {
         ArrayList<Invoice> invoices = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_INVOICES + ";";
+        String selectQuery = "SELECT  * FROM " + TABLE_INVOICES + " WHERE " + COLUMN_INVOICE_USER_ID + "='" + userId + "';";
 
         SQLiteDatabase db = this.getReadableDatabase();
         try {
@@ -569,12 +566,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT COUNT(*) FROM " + TABLE_FUNDS + " WHERE " + COLUMN_FUND_ID + " = \'" +
+        String query = "SELECT * FROM " + TABLE_FUNDS + " WHERE " + COLUMN_FUND_ID + " = \'" +
                 fund.getId() + "\'";
 
         Cursor mCount = db.rawQuery(query, null);
-        mCount.moveToFirst();
-        int exists = mCount.getInt(0);
+        int exists = mCount.getCount();
 
         if (exists == 0)
             addFund(fund);
@@ -590,6 +586,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_FUND_ID, fund.getId());
         values.put(COLUMN_FUND_USER_ID, fund.getUserId());
         values.put(COLUMN_FUND_NAME, fund.getName());
         values.put(COLUMN_FUND_DATE_DUE, fund.getDateDue().toString());
@@ -610,9 +607,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Fund> getFunds() {
+    public ArrayList<Fund> getFunds(String userId, String fundType) {
         ArrayList<Fund> funds = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_FUNDS + ";";
+        String selectQuery = "SELECT  * FROM " + TABLE_FUNDS + " WHERE " + COLUMN_FUND_USER_ID +
+                "='" + userId +
+                "' AND " + COLUMN_FUND_TYPE + "='" + fundType + "';";
 
         SQLiteDatabase db = this.getReadableDatabase();
         try {

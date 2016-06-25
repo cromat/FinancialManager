@@ -1,7 +1,9 @@
 package com.example.mat.financialmanager.activity.fund;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,11 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.mat.financialmanager.AppConfig;
 import com.example.mat.financialmanager.R;
+import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.enums.FundTypes;
 import com.example.mat.financialmanager.model.Fund;
 import com.example.mat.financialmanager.model.PensionFund;
 import com.example.mat.financialmanager.model.TermSaving;
+import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 
 public class FundDetailsActivity extends AppCompatActivity {
 
@@ -26,6 +31,7 @@ public class FundDetailsActivity extends AppCompatActivity {
     private TextView textFundMonthlyTax;
     private TextView textFundInterest;
     private TextView textFundValueAfter;
+    private TextView textFundCurrency;
 
     private void findViews() {
         textFundName = (TextView)findViewById( R.id.text_fund_name );
@@ -35,6 +41,7 @@ public class FundDetailsActivity extends AppCompatActivity {
         textFundMonthlyTax = (TextView)findViewById( R.id.text_fund_monthly_tax );
         textFundInterest = (TextView)findViewById( R.id.text_fund_interest );
         textFundValueAfter = (TextView)findViewById( R.id.text_fund_value_after );
+        textFundCurrency = (TextView)findViewById( R.id.text_fund_currency );
     }
 
     @Override
@@ -49,7 +56,23 @@ public class FundDetailsActivity extends AppCompatActivity {
         fund = (Fund) i.getSerializableExtra("fund");
 
         textFundName.setText(fund.getName());
-        textFundValue.setText(Double.toString(fund.getValue()));
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean useDefaultCurrency = prefs.getBoolean(AppConfig.PREF_DEFAULT_CURRENCY, false);
+
+        if (useDefaultCurrency){
+            String defaultCurr = prefs.getString(AppConfig.PREF_CURRENCY, Currencies.HRK.toString());
+            SQLiteHelper dbCurr = new SQLiteHelper(getApplicationContext());
+            double balanceRecalc = dbCurr.getFromTo(fund.getCurrency(), defaultCurr, fund.getValue());
+
+            textFundValue.setText(String.format("%.2f", balanceRecalc));
+            textFundCurrency.setText(defaultCurr);
+        }
+        else {
+            textFundCurrency.setText(fund.getCurrency());
+            textFundValue.setText(String.format("%.2f",fund.getValue()));
+        }
+
         textFundBank.setText(fund.getBank());
         textExpiryDate.setText(fund.getStringCroDate());
 

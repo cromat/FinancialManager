@@ -49,7 +49,7 @@ public class TaxDetailsActivity extends AppCompatActivity {
         tax = (Tax) i.getSerializableExtra("tax");
 
         textTaxName.setText(tax.getName());
-        textTaxValue.setText(Double.toString(tax.getValue()));
+        textTaxValue.setText(String.format("%.2f",tax.getValue()));
         textTaxCurrency.setText(tax.getCurrency());
         textTaxCompany.setText(tax.getCompany());
         textTaxDateIssue.setText(tax.getCroDateIssue());

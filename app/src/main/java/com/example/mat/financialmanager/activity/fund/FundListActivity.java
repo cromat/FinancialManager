@@ -28,7 +28,6 @@ import com.example.mat.financialmanager.model.PensionFund;
 import com.example.mat.financialmanager.model.TermSaving;
 import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -75,19 +74,8 @@ public class FundListActivity extends AppCompatActivity
         recyclerFunds = (RecyclerView)findViewById(R.id.recycler_fund);
         textNoFunds= (TextView)findViewById(R.id.text_no_funds);
 
-        getFunds();
+        AppConfig.connectToParse(getApplicationContext());
 
-        try {
-            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                    .applicationId(AppConfig.APP_ID)
-                    .server(AppConfig.PARSE_LINK)
-                    .build()
-            );
-
-        }
-        catch (IllegalStateException e){
-            e.printStackTrace();
-        }
 
         recyclerFunds.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -96,14 +84,14 @@ public class FundListActivity extends AppCompatActivity
         recyclerFunds.setAdapter(adapterFunds);
 
         parseFetchFunds();
-        getFunds();
-
         dataSetChanged();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_funds);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!searching)
+                    parseFetchFunds();
                 dataSetChanged();
             }
         });
@@ -131,6 +119,7 @@ public class FundListActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        funds.clear();
         dataSetChanged();
     }
 
@@ -179,9 +168,18 @@ public class FundListActivity extends AppCompatActivity
         }
 
         if(name.equals(FundListActivity.class.getName())) {
-            String ft = (String) intent.getSerializableExtra("name");
+            String ft = (String) intent.getSerializableExtra(AppConfig.FUND_TYPE.toString());
             if (ft.equals(fundType))
                 dataSetChanged();
+            else{
+                fundType = ft;
+                Intent i = new Intent(getApplicationContext(), FundListActivity.class);
+                i.putExtra(AppConfig.FUND_TYPE.toString(), ft);
+                i.putExtra("name", FundListActivity.class.getName());
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                finish();
+                startActivity(i);
+            }
         }
         else
             startActivity(intent);
@@ -221,7 +219,9 @@ public class FundListActivity extends AppCompatActivity
 
                         db.updateOrInsertFund(fund);
                         dataSetChanged();
+
                     }
+                    searching = false;
                 }
                 else {
                     e.printStackTrace();
@@ -232,13 +232,11 @@ public class FundListActivity extends AppCompatActivity
 
     public void getFunds(){
         try {
-            funds = db.getFunds();
+            funds = db.getFunds(ParseUser.getCurrentUser().getObjectId(), fundType);
         }
         catch (NullPointerException e){
             e.printStackTrace();
         }
-
-        dataSetChanged();
 
         if (funds.size() == 0){
             textNoFunds.setVisibility(View.VISIBLE);
@@ -254,9 +252,12 @@ public class FundListActivity extends AppCompatActivity
     @UiThread
     protected void dataSetChanged() {
         try {
-            adapterFunds= new FundAdapter(funds);
-            adapterFunds.notifyItemInserted(funds.size());
+            funds.clear();
+            getFunds();
+            adapterFunds = new FundAdapter(funds);
             recyclerFunds.setAdapter(adapterFunds);
+            adapterFunds.notifyItemInserted(funds.size());
+            adapterFunds.notifyDataSetChanged();
         }
         catch (NullPointerException ex) {
             ex.printStackTrace();

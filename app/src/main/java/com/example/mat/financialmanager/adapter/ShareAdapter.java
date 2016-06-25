@@ -73,11 +73,11 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
             }
             double balanceRecalc = dbCurr.getFromTo(shares.get(i).getCurrency(), defaultCurr, shares.get(i).getValue());
 
-            ivh.value.setText(Double.toString(balanceRecalc));
+            ivh.value.setText(String.format("%.2f", balanceRecalc));
             ivh.currency.setText(defaultCurr);
         }
         else {
-            ivh.value.setText(Double.toString(shares.get(i).getValue()));
+            ivh.value.setText(String.format("%.2f",shares.get(i).getValue()));
             ivh.currency.setText(shares.get(i).getCurrency());
         }
     }
@@ -94,6 +94,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
 
         public ShareViewHolder(View view) {
             super(view);
+            view.setOnClickListener(this);
             name = (TextView)view.findViewById( R.id.item_text_share_name );
             company = (TextView)view.findViewById( R.id.item_text_share_company );
             quantity = (TextView)view.findViewById( R.id.item_text_share_quantity );

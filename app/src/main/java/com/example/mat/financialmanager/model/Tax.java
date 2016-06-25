@@ -131,7 +131,7 @@ public class Tax implements Serializable{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        this.dateDue = date;
+        this.dateIssue = date;
     }
 
     public String getCurrency() {

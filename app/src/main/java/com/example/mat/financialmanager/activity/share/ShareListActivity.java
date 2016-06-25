@@ -25,7 +25,6 @@ import com.example.mat.financialmanager.adapter.ShareAdapter;
 import com.example.mat.financialmanager.model.Share;
 import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -61,19 +60,8 @@ public class ShareListActivity extends AppCompatActivity
         recyclerShares= (RecyclerView)findViewById(R.id.recycler_share);
         textNoShares= (TextView)findViewById(R.id.text_no_shares);
 
-        getShares();
 
-        try {
-            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                    .applicationId(AppConfig.APP_ID)
-                    .server(AppConfig.PARSE_LINK)
-                    .build()
-            );
-
-        }
-        catch (IllegalStateException e){
-            e.printStackTrace();
-        }
+        AppConfig.connectToParse(getApplicationContext());
 
         recyclerShares.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -83,13 +71,14 @@ public class ShareListActivity extends AppCompatActivity
 
         parseFetchShares();
         getShares();
-
         dataSetChanged();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!searching)
+                    parseFetchShares();
                 dataSetChanged();
             }
         });
@@ -196,6 +185,7 @@ public class ShareListActivity extends AppCompatActivity
                         db.updateOrInsertShare(share);
                         dataSetChanged();
                     }
+                    searching = false;
                 }
                 else {
                     e.printStackTrace();
@@ -206,13 +196,11 @@ public class ShareListActivity extends AppCompatActivity
 
     public void getShares(){
         try {
-            shares = db.getShares();
+            shares = db.getShares(ParseUser.getCurrentUser().getObjectId());
         }
         catch (NullPointerException e){
             e.printStackTrace();
         }
-
-        dataSetChanged();
 
         if (shares.size() == 0){
             textNoShares.setVisibility(View.VISIBLE);
@@ -228,8 +216,12 @@ public class ShareListActivity extends AppCompatActivity
     @UiThread
     protected void dataSetChanged() {
         try {
+            shares.clear();
+            parseFetchShares();
+            getShares();
             adapterShares = new ShareAdapter(shares);
             adapterShares.notifyItemInserted(shares.size());
+            adapterShares.notifyDataSetChanged();
             recyclerShares.setAdapter(adapterShares);
         }
         catch (NullPointerException ex) {

@@ -81,12 +81,12 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
             SQLiteHelper dbCurr = new SQLiteHelper(getApplicationContext());
             double balanceRecalc = dbCurr.getFromTo(invoice.getCurrency(), defaultCurr, invoice.getBalance());
 
-            textBalance.setText(Double.toString(balanceRecalc));
+            textBalance.setText(String.format("%.2f", balanceRecalc));
             textCurrency.setText(defaultCurr);
         }
         else {
             textCurrency.setText(invoice.getCurrency());
-            textBalance.setText(Double.toString(invoice.getBalance()));
+            textBalance.setText(String.format("%.2f",invoice.getBalance()));
         }
 
 
