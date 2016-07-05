@@ -144,6 +144,8 @@
                     android:id="@+id/item_share_text_value"
                     android:hint="10000"
                     android:singleLine="true"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
                     />
 
                 <!--Currency-->
@@ -154,6 +156,9 @@
                     android:singleLine="true"
                     android:hint="USD"
                     android:layout_marginLeft="3dp"
+                    android:gravity="end"
+                    android:textAlignment="textEnd"
+
                     />
 
             </LinearLayout>

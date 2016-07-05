@@ -78,14 +78,14 @@ public class FundDetailsActivity extends AppCompatActivity {
 
         if(fund.getFundType().equals(FundTypes.PENSION_FUND.toString())) {
             textFundMonthlyTax.setVisibility(View.VISIBLE);
-            textFundMonthlyTax.setText(Double.toString(((PensionFund) fund).getMonthlyTax()));
+            textFundMonthlyTax.setText(String.format("%.2f",((PensionFund) fund).getMonthlyTax()));
         }
 
         else if(fund.getFundType().equals(FundTypes.TERM_SAVING.toString())) {
             textFundInterest.setVisibility(View.VISIBLE);
             textFundValueAfter.setVisibility(View.VISIBLE);
-            textFundInterest.setText(Double.toString(((TermSaving)fund).getInterest()));
-            textFundValueAfter.setText(Double.toString(((TermSaving)fund).getValueAfter()));
+            textFundInterest.setText(String.format("%.2f",((TermSaving)fund).getInterest()));
+            textFundValueAfter.setText(String.format("%.2f",((TermSaving)fund).getValueAfter()));
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

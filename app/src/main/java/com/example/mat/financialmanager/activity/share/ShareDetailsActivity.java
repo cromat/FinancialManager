@@ -18,7 +18,7 @@ import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.model.Share;
 import com.example.mat.financialmanager.sqlite.SQLiteHelper;
 
-public class ShareDetailsActivity extends AppCompatActivity {
+public class  ShareDetailsActivity extends AppCompatActivity {
 
     private TextView textShareName;
     private TextView textShareValue;
