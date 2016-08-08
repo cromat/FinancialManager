@@ -19,6 +19,8 @@ import com.example.mat.financialmanager.R;
 import com.example.mat.financialmanager.enums.Currencies;
 import com.example.mat.financialmanager.enums.FundTypes;
 import com.example.mat.financialmanager.model.Fund;
+import com.example.mat.financialmanager.model.PensionFund;
+import com.example.mat.financialmanager.model.TermSaving;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
@@ -112,6 +114,7 @@ public class AddEditFundActivity extends AppCompatActivity implements Validator.
         if (fund != null){
             if (fund.getFundType().equals(FundTypes.PENSION_FUND.toString())){
                 editFundMonthlyTax.setVisibility(View.VISIBLE);
+                editFundMonthlyTax.setText(String.format("%.2f",Double.toString(((PensionFund)fund).getMonthlyTax())));
 
                 editFundInterest.setText(AppConfig.NULL);
                 editFundValueAfter.setText(AppConfig.NULL);
@@ -120,6 +123,9 @@ public class AddEditFundActivity extends AppCompatActivity implements Validator.
             else if(fund.getFundType().equals(FundTypes.TERM_SAVING.toString())){
                 editFundInterest.setVisibility(View.VISIBLE);
                 editFundValueAfter.setVisibility(View.VISIBLE);
+
+                editFundInterest.setText(String.format("%.2f",((TermSaving)fund).getInterest()));
+                editFundValueAfter.setText(String.format("%.2f",((TermSaving)fund).getValueAfter()));
 
                 editFundMonthlyTax.setText(AppConfig.NULL);
             }
@@ -131,7 +137,7 @@ public class AddEditFundActivity extends AppCompatActivity implements Validator.
             }
             editFundName.setText(fund.getName());
             spinnerFundType.setSelection(adapterFundTypes.getPosition(fund.getFundType()));
-            editFundValue.setText(Double.toString(fund.getValue()));
+            editFundValue.setText(String.format("%.2f",fund.getValue()));
             spinnerFundCurrency.setSelection(adapterCurrencies.getPosition(fund.getCurrency()));
             editFundBank.setText(fund.getBank());
             bttnFundDateTo.setText(fund.getStringCroDate());
