@@ -152,5 +152,7 @@
         completions."
     </string>
     <string name="value_given_curr">The value is in currency choosen above.</string>
+    <string name="add">+</string>
+    <string name="sub">-</string>
 
 </resources>
